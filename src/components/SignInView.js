@@ -1,8 +1,6 @@
-import './App.css';
-import Header from './components/Header';
-import RecipeForm from './components/Recipe_Form'
+import '../App.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import SignIn from './components/SignIn';
+import SignIn from './SignIn';
 
 const darkTheme = createTheme({
   palette: {
@@ -11,19 +9,16 @@ const darkTheme = createTheme({
 
 });
 
-function App() {
+function SignInView() {
   return (
     <div className='App'>
       <div className='App-header'>
         <ThemeProvider theme = { darkTheme }>
-          
-          <Header/>
-          <RecipeForm/>
-          
+          <SignIn/>
         </ThemeProvider>
       </div>
     </div>
   );
 }
 
-export default App;
+export default SignInView;

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-export default function MultilineTextFields() {
+export default function RecipeForm() {
   const [value, setValue] = React.useState({ RecipeName: "Recipe Name", IngredientList: 'Ingredient List', Directions: 'Directions'});
   
 

@@ -8,14 +8,14 @@ import Router from './components/Router'
 import { BrowserRouter } from 'react-router-dom'
 
 
-// render(<Router />, document.querySelector('#main'));
+render(<Router />, document.querySelector('#root'));
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
