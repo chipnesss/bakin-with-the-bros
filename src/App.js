@@ -1,26 +1,27 @@
 import './App.css';
 import Header from './components/Header';
 import RecipeForm from './components/Recipe_Form'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SignIn from './components/SignIn';
+import initializeFirebase from './firebase/connection'
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark'
-  }
 
-});
+
+
+
+
+const database = initializeFirebase()
 
 function App() {
+
   return (
     <div className='App'>
       <div className='App-header'>
-        <ThemeProvider theme = { darkTheme }>
+        
           
           <Header/>
-          <RecipeForm/>
+          <RecipeForm database = { database }/>
           
-        </ThemeProvider>
+      
       </div>
     </div>
   );

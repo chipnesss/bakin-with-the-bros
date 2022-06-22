@@ -13,6 +13,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './Header';
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import firebase from 'firebase/app'
+import { useHistory } from 'react-router-dom';
+import { HistoryRounded } from '@mui/icons-material';
 
 function Copyright(props) {
   return (
@@ -35,6 +39,7 @@ const darkTheme = createTheme({
   });
 
 export default function SignUp() {
+  const history = useHistory()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,6 +48,16 @@ export default function SignUp() {
       password: data.get('password'),
     });
   };
+
+
+function SignUpWithGoogle(e) {
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
+  signInWithPopup(auth, provider).then(()=>{
+    history.push('/')
+  })
+    };
+  
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -120,7 +135,17 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
+            
               Sign Up
+            </Button>
+            <Button
+              onClick={SignUpWithGoogle}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+            
+              Sign Up With Google
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

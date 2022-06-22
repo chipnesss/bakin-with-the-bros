@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+
+.Container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: auto;
+}
+
+.Item {
+  border-color: #99fb61;
+  margin: auto;
+  flex-grow: 4;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+  margin: 50px;
+}
+

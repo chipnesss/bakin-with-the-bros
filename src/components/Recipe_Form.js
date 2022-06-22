@@ -2,8 +2,12 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { getDatabase, ref, set, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
-export default function RecipeForm() {
+
+
+export default function RecipeForm(props) {
   const [value, setValue] = React.useState({ RecipeName: "Recipe Name", IngredientList: 'Ingredient List', Directions: 'Directions'});
   
 
@@ -14,7 +18,15 @@ export default function RecipeForm() {
   };
 
   const handleSubmit = (e) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
     e.preventDefault()
+    const postListRef = ref(props.database, 'recipes');
+    const newPostRef = push(postListRef);
+      set(newPostRef, {
+          ...value, 
+          userId : user.uid
+      });
     alert(JSON.stringify(value))
   }
 
