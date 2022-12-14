@@ -14,7 +14,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ReceiptLongOutlined } from "@mui/icons-material";
+// import { ReceiptLongOutlined } from "@mui/icons-material";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { useFirebase } from "../FirebaseProvider";
 
@@ -40,7 +40,7 @@ function RecipeReviewCard({ recipe }) {
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
             {}
           </Avatar>
         }
@@ -50,6 +50,7 @@ function RecipeReviewCard({ recipe }) {
           </IconButton>
         }
         title={recipe.RecipeName}
+        subheader="Date ( fix me )"
         // subheader="September 14, 2016"
       />
       <CardMedia
@@ -75,6 +76,7 @@ function RecipeReviewCard({ recipe }) {
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
+          // theme= darkTheme
         >
           <ExpandMoreIcon />
         </ExpandMore>
