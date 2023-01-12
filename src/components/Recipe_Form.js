@@ -7,6 +7,9 @@ import { getAuth } from "firebase/auth";
 import { useFirebase } from "../FirebaseProvider";
 import { Link } from "react-router-dom";
 
+//Test Import
+import Image_Upload from "./Image_Upload";
+
 export default function RecipeForm(props) {
   const [value, setValue] = React.useState({
     RecipeName: "Recipe Name",
@@ -74,6 +77,7 @@ export default function RecipeForm(props) {
           variant="filled"
         />
       </div>
+      <Image_Upload />
       <Button variant="outlined" onClick={handleSubmit}>
         Submit
       </Button>
