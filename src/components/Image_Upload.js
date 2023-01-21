@@ -6,6 +6,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 //Card
 import Card from "@mui/material/Card";
@@ -16,6 +17,12 @@ import Grid from "@mui/material/Grid";
 import SearchIcon from "@mui/icons-material/Search";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CollectionsIcon from "@mui/icons-material/Collections";
+
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//   },
+// });
 
 function ImageUploadCard(props) {
   const [mainState, setMainState] = React.useState("initial");
@@ -107,23 +114,21 @@ function ImageUploadCard(props) {
   function renderInitialState() {
     return (
       <React.Fragment>
-        <CardContent>
-          <Grid container justify="center" alignItems="center">
-            <input
-              style={{ display: "none" }}
-              accept="image/*"
-              id="contained-button-file"
-              multiple
-              type="file"
-              onChange={handleUploadClick}
-            />
-            <label htmlFor="contained-button-file">
-              <Fab component="span">
-                <AddPhotoAlternateIcon />
-              </Fab>
-            </label>
-          </Grid>
-        </CardContent>
+        <Grid container justify="center" alignItems="center">
+          <input
+            style={{ display: "none" }}
+            accept="image/*"
+            id="contained-button-file"
+            multiple
+            type="file"
+            onChange={handleUploadClick}
+          />
+          <label htmlFor="contained-button-file">
+            <Fab component="span">
+              <AddPhotoAlternateIcon />
+            </Fab>
+          </label>
+        </Grid>
       </React.Fragment>
     );
   }
@@ -132,7 +137,7 @@ function ImageUploadCard(props) {
     return (
       <React.Fragment>
         <CardActionArea onClick={imageResetHandler}>
-          <img width="100%" src={selectedFile} />
+          <img width="50%" src={selectedFile} />
         </CardActionArea>
       </React.Fragment>
     );
