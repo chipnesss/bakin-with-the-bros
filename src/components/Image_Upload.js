@@ -97,6 +97,7 @@ function ImageUploadCard(props) {
       () => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          props.onValueChange(downloadURL);
           console.log("File available at", downloadURL);
         });
       }

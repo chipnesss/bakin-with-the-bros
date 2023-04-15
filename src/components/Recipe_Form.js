@@ -16,6 +16,8 @@ export default function RecipeForm(props) {
     IngredientList: "",
     Directions: "",
     ProTips: "",
+    Date: new Date().toLocaleDateString(),
+    PhotoUrl: "",
   });
   const database = useFirebase();
 
@@ -24,7 +26,13 @@ export default function RecipeForm(props) {
     setValue({ ...value, [field]: event.target.value });
   };
 
+  const handleChangeImg = (downloadURL) => {
+    // setValue(event.target.value);
+    setValue({ ...value, PhotoUrl: downloadURL });
+  };
+
   const handleSubmit = (e) => {
+    // Needs to get the photo URL
     const auth = getAuth();
     const user = auth.currentUser;
     e.preventDefault();
@@ -64,7 +72,7 @@ export default function RecipeForm(props) {
           style={{ justifyContent: "center" }}
         />
 
-        <Image_Upload />
+        <Image_Upload onValueChange={handleChangeImg} />
       </div>
       <div>
         <TextField

@@ -50,13 +50,16 @@ function RecipeReviewCard({ recipe }) {
           </IconButton>
         }
         title={recipe.RecipeName}
-        subheader="Date ( fix me )"
+        subheader={recipe.Date}
         // subheader="September 14, 2016"
       />
       <CardMedia
         component="img"
         height="194"
-        image="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/chip2.jpg?alt=media"
+        image={
+          recipe.PhotoUrl ||
+          "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
+        }
         alt="Paella dish"
       />
       <CardContent>
