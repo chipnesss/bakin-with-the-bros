@@ -133,6 +133,15 @@ export default function RecipeForm(props) {
       >
         View Recipe Feed{" "}
       </Button>
+
+      <Button
+        component={Link}
+        to="/recipe"
+        variant="contained"
+        sx={{ width: 200, padding: 1, margin: 2 }}
+      >
+        Check Out A Recipe{" "}
+      </Button>
     </Box>
   );
 }

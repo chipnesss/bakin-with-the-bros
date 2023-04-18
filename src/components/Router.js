@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import App from "../App";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import RecipeView from "./RecipeView";
 import RecipeForm from "./Recipe_Form";
 import SignInView from "./SignInView";
 import SignUpView from "./SignUpView";
@@ -51,6 +52,7 @@ const Router = () => {
             <Route exact path="/signup" component={SignUpView} />
             <Route exact path="/signin" component={SignInView} />
             <PrivateRoute exact path="/recipeFeed" component={RecipeFeed} />
+            <Route exact path="/recipe" component={RecipeView} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>
