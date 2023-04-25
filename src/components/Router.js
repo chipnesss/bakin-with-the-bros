@@ -52,7 +52,7 @@ const Router = () => {
             <Route exact path="/signup" component={SignUpView} />
             <Route exact path="/signin" component={SignInView} />
             <PrivateRoute exact path="/recipeFeed" component={RecipeFeed} />
-            <Route exact path="/recipe" component={RecipeView} />
+            <Route path="/recipe/:RecipeId" component={RecipeView} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

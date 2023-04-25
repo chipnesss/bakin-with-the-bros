@@ -17,6 +17,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { useFirebase } from "../FirebaseProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useHistory } from "react-router-dom";
+
 
 
 const darkTheme = createTheme({
@@ -40,9 +42,17 @@ const ExpandMore = styled((props) => {
 function RecipeReviewCard({ recipe }) {
   const [expanded, setExpanded] = React.useState(false);
 
+  const history = useHistory();
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+
+  
+  const handleRecipeClick = () => {
+    history.push(`recipe/${recipe.RecipedId}`);
+  }
 
   return (
     
@@ -60,7 +70,6 @@ function RecipeReviewCard({ recipe }) {
         }
         title={recipe.RecipeName}
         subheader={recipe.Date}
-        // subheader="September 14, 2016"
       />
       <CardMedia
         component="img"
@@ -70,6 +79,8 @@ function RecipeReviewCard({ recipe }) {
           "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
         }
         alt="Paella dish"
+
+        onClick={handleRecipeClick}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
@@ -120,10 +131,9 @@ export default function RecipeFeed() {
       get(child(dbRef, `recipes/`)).then((snapshot) => {
         console.log(snapshot);
         if (snapshot.exists()) {
-          const recipeObject = snapshot.val();
-          const recipeList = Object.values(recipeObject);
+          const recipeList = Object.entries(snapshot.val()).map(([k, v]) => ({ RecipedId: k, ...v }));
           setRecipes(recipeList);
-          console.log(snapshot.val());
+          console.log(recipeList);
         } else {
           console.log("No data available");
         }
