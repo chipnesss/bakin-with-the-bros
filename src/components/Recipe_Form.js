@@ -6,6 +6,8 @@ import { getDatabase, ref, set, push } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useFirebase } from "../FirebaseProvider";
 import { Link } from "react-router-dom";
+import SearchAppBar from "./NavBar";
+
 
 //Test Import
 import Image_Upload from "./Image_Upload";
@@ -46,6 +48,7 @@ export default function RecipeForm(props) {
   };
 
   return (
+    
     <Box
       component="form"
       sx={{
@@ -54,6 +57,14 @@ export default function RecipeForm(props) {
       noValidate
       autoComplete="off"
     >
+      <div style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          <SearchAppBar></SearchAppBar>
+        </div>
       <div
         style={{
           display: "flex",

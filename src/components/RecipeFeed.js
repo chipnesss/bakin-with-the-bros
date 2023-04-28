@@ -55,7 +55,8 @@ function RecipeReviewCard({ recipe }) {
   }
 
   return (
-    
+    <>
+    <ThemeProvider theme={darkTheme}>
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
@@ -111,6 +112,8 @@ function RecipeReviewCard({ recipe }) {
         </CardContent>
       </Collapse>
     </Card>
+    </ThemeProvider>
+    </>
   );
 }
 

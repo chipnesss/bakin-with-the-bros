@@ -3,13 +3,14 @@ import Box from '@mui/material/Box';
 import { useFirebase } from "../FirebaseProvider";
 import CssBaseline from "@mui/material/CssBaseline";
 import Button from "@mui/material/Button";
-
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./Header";
 import { getDatabase, ref, child, get } from "firebase/database";
 import Avatar from '@mui/material/Avatar';
 import { useParams, Link } from "react-router-dom";
+import SearchAppBar from "./NavBar";
+
 
 
 const darkTheme = createTheme({
@@ -51,6 +52,7 @@ export default function Recipe({ }) {
 
   return (
     <><ThemeProvider theme={darkTheme}>
+      <SearchAppBar></SearchAppBar>
       <Container stylenpm={{ background: "rgba(255, 255, 255, 0.10)" }}>
 
 
