@@ -7,7 +7,11 @@ import { getAuth } from "firebase/auth";
 import { useFirebase } from "../FirebaseProvider";
 import { Link } from "react-router-dom";
 import SearchAppBar from "./NavBar";
-
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 //Test Import
 import Image_Upload from "./Image_Upload";
@@ -22,6 +26,16 @@ export default function RecipeForm(props) {
     PhotoUrl: "",
   });
   const database = useFirebase();
+
+  // const [editorState, setEditorState] = React.useState(
+  //   EditorState.createEmpty()
+  // );
+
+  // const onEditorStateChange = (editorState) => {
+  //   setEditorState({
+  //     editorState,
+  //   });
+  // };
 
   const handleChange = (event, field) => {
     // setValue(event.target.value);
@@ -48,7 +62,6 @@ export default function RecipeForm(props) {
   };
 
   return (
-    
     <Box
       component="form"
       sx={{
@@ -57,14 +70,16 @@ export default function RecipeForm(props) {
       noValidate
       autoComplete="off"
     >
-      <div style={{
+      <div
+        style={{
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-        }}>
-          <SearchAppBar></SearchAppBar>
-        </div>
+        }}
+      >
+        <SearchAppBar></SearchAppBar>
+      </div>
       <div
         style={{
           display: "flex",
@@ -84,6 +99,21 @@ export default function RecipeForm(props) {
         />
 
         <Image_Upload onValueChange={handleChangeImg} />
+      </div>
+
+      <div>
+        <div>
+          {/* <Editor
+            editorState={editorState}
+            wrapperClassName="demo-wrapper"
+            editorClassName="demo-editor"
+            onEditorStateChange={onEditorStateChange}
+          /> */}
+          {/* <textarea
+            disabled
+            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+          /> */}
+        </div>
       </div>
       <div>
         <TextField
