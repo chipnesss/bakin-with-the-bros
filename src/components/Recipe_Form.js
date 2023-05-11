@@ -27,15 +27,13 @@ export default function RecipeForm(props) {
   });
   const database = useFirebase();
 
-  // const [editorState, setEditorState] = React.useState(
-  //   EditorState.createEmpty()
-  // );
+  const [editorState, setEditorState] = React.useState(EditorState.createEmpty());
 
-  // const onEditorStateChange = (editorState) => {
-  //   setEditorState({
-  //     editorState,
-  //   });
-  // };
+  const onEditorStateChange = (editorState) => {
+    setEditorState({
+      editorState,
+    });
+  };
 
   const handleChange = (event, field) => {
     // setValue(event.target.value);
@@ -103,12 +101,17 @@ export default function RecipeForm(props) {
 
       <div>
         <div>
-          {/* <Editor
+          <Editor
             editorState={editorState}
             wrapperClassName="demo-wrapper"
             editorClassName="demo-editor"
-            onEditorStateChange={onEditorStateChange}
-          /> */}
+            // onEditorStateChange={onEditorStateChange}
+            onEditorStateChange={(e) => {
+              setEditorState && setEditorState(e)
+            }}
+
+
+          />
           {/* <textarea
             disabled
             value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
