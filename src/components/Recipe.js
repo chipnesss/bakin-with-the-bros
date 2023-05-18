@@ -10,6 +10,8 @@ import { getDatabase, ref, child, get } from "firebase/database";
 import Avatar from "@mui/material/Avatar";
 import { useParams, Link } from "react-router-dom";
 import SearchAppBar from "./NavBar";
+import draftToHtml from "draftjs-to-html";
+import { convertToRaw } from "draft-js";
 
 const darkTheme = createTheme({
   palette: {
@@ -81,9 +83,16 @@ export default function Recipe({}) {
                 padding: "10px",
               }}
             >
-              <Box>
+              <Box sx={{ textAlign: "left" }}>
                 <h4>Ingredients:</h4>
-                {recipe.IngredientList}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      recipe && recipe.IngredientList
+                        ? recipe.IngredientList
+                        : "",
+                  }}
+                />
               </Box>
             </Box>
             <Box

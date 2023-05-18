@@ -11,7 +11,7 @@ import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "./EditorCSS.css";
 
 //Test Import
 import Image_Upload from "./Image_Upload";
@@ -27,7 +27,9 @@ export default function RecipeForm(props) {
   });
   const database = useFirebase();
 
-  const [editorState, setEditorState] = React.useState(EditorState.createEmpty());
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
 
   const onEditorStateChange = (editorState) => {
     setEditorState({
@@ -46,6 +48,15 @@ export default function RecipeForm(props) {
   };
 
   const handleSubmit = (e) => {
+    let messageContentHTML = null;
+
+    if (editorState && editorState.getCurrentContent()) {
+      messageContentHTML = draftToHtml(
+        convertToRaw(editorState.getCurrentContent())
+      );
+    }
+
+    console.log(messageContentHTML);
     // Needs to get the photo URL
     const auth = getAuth();
     const user = auth.currentUser;
@@ -54,6 +65,7 @@ export default function RecipeForm(props) {
     const newPostRef = push(postListRef);
     set(newPostRef, {
       ...value,
+      IngredientList: messageContentHTML,
       userId: user.uid,
     });
     alert(JSON.stringify(value));
@@ -100,23 +112,16 @@ export default function RecipeForm(props) {
       </div>
 
       <div>
-        <div>
+        <Box sx={{ maxWidth: "30%" }}>
           <Editor
             editorState={editorState}
             wrapperClassName="demo-wrapper"
             editorClassName="demo-editor"
-            // onEditorStateChange={onEditorStateChange}
             onEditorStateChange={(e) => {
-              setEditorState && setEditorState(e)
+              setEditorState && setEditorState(e);
             }}
-
-
           />
-          {/* <textarea
-            disabled
-            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-          /> */}
-        </div>
+        </Box>
       </div>
       <div>
         <TextField
