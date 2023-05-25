@@ -110,10 +110,28 @@ export default function RecipeForm(props) {
 
         <Image_Upload onValueChange={handleChangeImg} />
       </div>
-
-      <div>
-        <Box sx={{ maxWidth: "30%" }}>
+      <div margin="auto">
+        <Box sx={{ maxWidth: "66%", margin: "auto" }}>
+          <h4>Ingredients</h4>
           <Editor
+            toolbar={{
+              options: ["inline", "list"],
+              list: {
+                inDropdown: false,
+                className: undefined,
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ["unordered", "ordered"],
+              },
+
+              inline: {
+                inDropdown: false,
+                className: undefined,
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ["bold", "underline"],
+              },
+            }}
             editorState={editorState}
             wrapperClassName="demo-wrapper"
             editorClassName="demo-editor"
@@ -122,9 +140,42 @@ export default function RecipeForm(props) {
             }}
           />
         </Box>
+
+        {/* Start of directions */}
+
+        {/* <Box sx={{ maxWidth: "30%" }}>
+          <Editor
+            toolbar={{
+              options: ["inline", "list"],
+              list: {
+                inDropdown: false,
+                className: undefined,
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ["unordered", "ordered"],
+              },
+
+              inline: {
+                inDropdown: false,
+                className: undefined,
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ["bold", "underline"],
+              },
+            }}
+            editorState={editorState}
+            wrapperClassName="demo-wrapper"
+            editorClassName="demo-editor"
+            onEditorStateChange={(e) => {
+              setEditorState && setEditorState(e);
+            }}
+          />
+        </Box> */}
       </div>
+
+      {/* End of directions */}
       <div>
-        <TextField
+        {/* <TextField
           id="filled-textarea"
           label="Ingredient List"
           placeholder="Enter your ingredients here
@@ -136,7 +187,7 @@ export default function RecipeForm(props) {
           value={value.IngredientList}
           onChange={(e) => handleChange(e, "IngredientList")}
           variant="filled"
-        />
+        /> */}
         <TextField
           id="filled-multiline-static"
           label="Directions"
