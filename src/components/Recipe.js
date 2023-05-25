@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 });
 
-export default function Recipe({}) {
+export default function Recipe({ }) {
   let { RecipeId } = useParams();
   console.log(RecipeId);
 
@@ -48,7 +48,7 @@ export default function Recipe({}) {
     <>
       <ThemeProvider theme={darkTheme}>
         <SearchAppBar></SearchAppBar>
-        <Container stylenpm={{ background: "rgba(255, 255, 255, 0.10)" }}>
+        <Container >
           <CssBaseline />
           <Header />
           <Box
@@ -56,69 +56,23 @@ export default function Recipe({}) {
               margin: "25px",
               padding: "25px",
               background: "rgba(255, 255, 255, 0.10)",
-              float: "left",
-              width: "50%",
+              width: "90%",
               borderRadius: ".5%",
+              display: "flex"
             }}
           >
             <Avatar
               alt="Remy Sharp"
               src="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FChip%20Hubbard%20-%20HCA%20Headshot%20-.jpg?alt=media&token=1e32f0d3-3438-4c11-ad49-e75344f13760"
-            />
-            <Box
-              stylenpm={{
-                background: "rgba(255, 255, 255, 0.10)",
-                margin: "10px",
-                padding: "10px",
-              }}
-            >
-              <Box>{recipe.RecipeName}</Box>
+            />              <Box sx={{ textAlign: "left", color: "white" }}><p>{recipe.Date}</p></Box>
 
-              <Box>{recipe.Date}</Box>
-            </Box>
             <Box
-              stylenpm={{
-                background: "rgba(255, 255, 255, 0.10)",
-                margin: "10px",
-                padding: "10px",
-              }}
-            >
-              <Box sx={{ textAlign: "left" }}>
-                <h4>Ingredients:</h4>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      recipe && recipe.IngredientList
-                        ? recipe.IngredientList
-                        : "",
-                  }}
-                />
-              </Box>
-            </Box>
-            <Box
-              stylenpm={{
-                background: "rgba(255, 255, 255, 0.10)",
-                margin: "10px",
-                padding: "10px",
-              }}
+              sx={{ textAlign: "center", color: "white" }}
             >
               <Box>
-                <h4>Directions:</h4>
-                {recipe.Directions}
-              </Box>
-            </Box>
-          </Box>
-          <Box
-            stylenpm={{
-              margin: "25px",
-              padding: "25px",
-              background: "rgba(255, 255, 255, 0.10)",
-              float: "right",
-              width: "25%",
-              borderRadius: ".5%",
-            }}
-          >
-            <Box
+                <Box sx={{ textAlign: "left", color: "white" }}>
+                  <Box><h2>{recipe.RecipeName}</h2></Box>
+                  <Box
               component="img"
               sx={{
                 margin: "5px",
@@ -135,10 +89,11 @@ export default function Recipe({}) {
                 "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
               }
             />
-            <Box style={{ margin: "10px", padding: "10px" }}>
+            
+            {/* <Box style={{ margin: "10px", padding: "10px" }}>
               <h4>Pro Tips</h4>
               {recipe.ProTips}
-            </Box>
+            </Box> */}
             <Box>
               <Button
                 component={Link}
@@ -149,6 +104,34 @@ export default function Recipe({}) {
                 View Recipe Feed{" "}
               </Button>
             </Box>
+
+                  <h3>Ingredients:</h3>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        recipe && recipe.IngredientList
+                          ? recipe.IngredientList
+                          : "",
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Box
+                sx={{ textAlign: "left", color: "white" }}
+              >
+                <Box>
+                  <h3>Directions:</h3>
+                  <div dangerouslySetInnerHTML={{
+                    __html:
+                      recipe && recipe.Directions
+                        ? recipe.Directions
+                        : "",
+                  }}></div>
+                  {/* {recipe.Directions} */}
+                </Box>
+              </Box>
+            </Box>
+
           </Box>
         </Container>
       </ThemeProvider>

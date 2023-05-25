@@ -63,7 +63,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" >
         <CssBaseline />
         <Header />
         <Box

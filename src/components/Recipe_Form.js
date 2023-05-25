@@ -37,6 +37,26 @@ export default function RecipeForm(props) {
     });
   };
 
+// start test
+
+
+const [directionsState, setDirectionsState] = React.useState(
+  EditorState.createEmpty()
+);
+
+const onDirectionsStateChange = (directionsState) => {
+  setEditorState({
+    directionsState,
+  });
+};
+
+
+
+// end test
+
+
+
+
   const handleChange = (event, field) => {
     // setValue(event.target.value);
     setValue({ ...value, [field]: event.target.value });
@@ -49,13 +69,18 @@ export default function RecipeForm(props) {
 
   const handleSubmit = (e) => {
     let messageContentHTML = null;
+    let directvar = null;
 
     if (editorState && editorState.getCurrentContent()) {
       messageContentHTML = draftToHtml(
         convertToRaw(editorState.getCurrentContent())
       );
     }
-
+    if (directionsState && directionsState.getCurrentContent()) {
+      directvar = draftToHtml(
+        convertToRaw(directionsState.getCurrentContent())
+      );
+    }
     console.log(messageContentHTML);
     // Needs to get the photo URL
     const auth = getAuth();
@@ -66,6 +91,7 @@ export default function RecipeForm(props) {
     set(newPostRef, {
       ...value,
       IngredientList: messageContentHTML,
+      Directions: directvar,
       userId: user.uid,
     });
     alert(JSON.stringify(value));
@@ -75,6 +101,7 @@ export default function RecipeForm(props) {
     <Box
       component="form"
       sx={{
+        width:"65%",
         "& .MuiTextField-root": { m: 1, width: "25ch" },
       }}
       noValidate
@@ -111,7 +138,7 @@ export default function RecipeForm(props) {
         <Image_Upload onValueChange={handleChangeImg} />
       </div>
       <div margin="auto">
-        <Box sx={{ maxWidth: "66%", margin: "auto" }}>
+        <Box sx={{ maxWidth: "100%", margin: "auto" }}>
           <h4>Ingredients</h4>
           <Editor
             toolbar={{
@@ -142,35 +169,37 @@ export default function RecipeForm(props) {
         </Box>
 
         {/* Start of directions */}
+        <div margin="auto">
+          <Box sx={{ maxWidth: "100%", margin: "auto" }}>
+            <h4>Directions</h4>
+            <Editor
+              toolbar={{
+                options: ["inline", "list"],
+                list: {
+                  inDropdown: false,
+                  className: undefined,
+                  component: undefined,
+                  dropdownClassName: undefined,
+                  options: ["unordered", "ordered"],
+                },
 
-        {/* <Box sx={{ maxWidth: "30%" }}>
-          <Editor
-            toolbar={{
-              options: ["inline", "list"],
-              list: {
-                inDropdown: false,
-                className: undefined,
-                component: undefined,
-                dropdownClassName: undefined,
-                options: ["unordered", "ordered"],
-              },
-
-              inline: {
-                inDropdown: false,
-                className: undefined,
-                component: undefined,
-                dropdownClassName: undefined,
-                options: ["bold", "underline"],
-              },
-            }}
-            editorState={editorState}
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
-            onEditorStateChange={(e) => {
-              setEditorState && setEditorState(e);
-            }}
-          />
-        </Box> */}
+                inline: {
+                  inDropdown: false,
+                  className: undefined,
+                  component: undefined,
+                  dropdownClassName: undefined,
+                  options: ["bold", "underline"],
+                },
+              }}
+              editorState={directionsState}
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              onEditorStateChange={(e) => {
+                setDirectionsState && setDirectionsState(e);
+              }}
+            />
+          </Box>
+        </div>
       </div>
 
       {/* End of directions */}
@@ -188,7 +217,7 @@ export default function RecipeForm(props) {
           onChange={(e) => handleChange(e, "IngredientList")}
           variant="filled"
         /> */}
-        <TextField
+        {/* <TextField
           id="filled-multiline-static"
           label="Directions"
           placeholder="Add your instructions
@@ -201,8 +230,8 @@ export default function RecipeForm(props) {
           onChange={(e) => handleChange(e, "Directions")}
           // defaultValue="Default Value"
           variant="filled"
-        />
-        <TextField
+        /> */}
+        {/* <TextField
           id="filled-multiline-static"
           label="Pro Tips"
           placeholder="List a step and a potential challenge with the recipe
@@ -214,7 +243,7 @@ export default function RecipeForm(props) {
           onChange={(e) => handleChange(e, "ProTips")}
           // defaultValue="Default Value"
           variant="filled"
-        />
+        /> */}
       </div>
 
       <Button

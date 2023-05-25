@@ -16,7 +16,8 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Recipes() {
   return (
     <h1>
-      <a href="http://localhost:3000/">Bakin' With The Bros.</a>{" "}
+      {/* <a href="http://localhost:3000/">Bakin' With The Bros.</a>{" "} */}
+      Bakin' With The Bros.
       <FastfoodIcon />
     </h1>
   );
