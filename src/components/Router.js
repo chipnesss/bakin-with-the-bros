@@ -27,16 +27,18 @@ const Router = () => {
       if (firebase) {
         const auth = getAuth(firebase.app);
         const user = auth.currentUser;
+        console.log(user);
         setUser(user);
         setLoading(false);
       }
     }, [firebase]);
     // const auth = getAuth();
 
-    if (loading) {
+    if (loading || !firebase) {
       return <h1>loading...</h1>;
     }
-    if (user) {
+    // console.log("console log" + user);
+    if (user && !loading) {
       return <Route {...options} component={component} />;
     } else {
       return <Redirect to="/signup" />;

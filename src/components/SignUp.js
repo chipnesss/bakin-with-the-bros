@@ -13,10 +13,21 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./Header";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { HistoryRounded } from "@mui/icons-material";
+import {
+  getAuth,
+  setPersistence,
+  signInWithRedirect,
+  inMemoryPersistence,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  browserSessionPersistence,
+} from "firebase/auth";
 
 function Copyright(props) {
   return (
@@ -54,16 +65,29 @@ export default function SignUp() {
   };
 
   function SignUpWithGoogle(e) {
-    const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    signInWithPopup(auth, provider).then(() => {
-      history.push("/");
-    });
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => {
+        const provider = new GoogleAuthProvider();
+        // In memory persistence will be applied to the signed in Google user
+        // even though the persistence was set to 'none' and a page redirect
+        // occurred.
+        signInWithPopup(auth, provider).then(() => {
+          console.log("a string it doesnt really matter what it is");
+          history.push("/");
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
   }
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Container component="main" >
+      <Container component="main">
         <CssBaseline />
         <Header />
         <Box
