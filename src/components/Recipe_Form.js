@@ -7,11 +7,14 @@ import { getAuth } from "firebase/auth";
 import { useFirebase } from "../FirebaseProvider";
 import { Link } from "react-router-dom";
 import SearchAppBar from "./NavBar";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "./EditorCSS.css";
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import BasicAlerts from "./SubmissionAlert";
 
 //Test Import
 import Image_Upload from "./Image_Upload";
@@ -37,22 +40,67 @@ export default function RecipeForm(props) {
     });
   };
 
-// start test
+  // start test
+  const getInitialIngredientsState = () => {
+    const html = localStorage.getItem("ingredientsState");
+    if (html) {
+      const contentBlock = htmlToDraft(html);
+      if (contentBlock) {
+        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        const editorState = EditorState.createWithContent(contentState);
+        return editorState
+      }
+
+      else {
+        return EditorState.createEmpty()
+      }
+    }
+  }
+
+  const getInitialDirectionState = () => {
+    const html = localStorage.getItem("directionState");
+    if (html) {
+      const contentBlock = htmlToDraft(html);
+      if (contentBlock) {
+        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        const editorState = EditorState.createWithContent(contentState);
+        return editorState
+      }
+
+      else {
+        return EditorState.createEmpty()
+      }
+    }
+  }
 
 
-const [directionsState, setDirectionsState] = React.useState(
-  EditorState.createEmpty()
-);
+  const [directionsState, setDirectionsState] = React.useState(
+    getInitialDirectionState()
+  );
 
-const onDirectionsStateChange = (directionsState) => {
-  setEditorState({
-    directionsState,
-  });
-};
+  const [ingredientsState, setIngredientsState] = React.useState(
+    getInitialIngredientsState()
+  );
+
+  const onDirectionsStateChange = (directionsState) => {
+    setEditorState({
+      directionsState,
+    });
+    console.log("function called in general")
+    localStorage.setItem("directionsState", directionsState)
+  };
+
+  const onIngredientsStateChange = (ingredientsState) => {
+    setEditorState({
+      ingredientsState,
+    });
+    console.log("function called in general")
+    localStorage.setItem("ingredientsState", ingredientsState)
+  };
 
 
 
-// end test
+  // end test
 
 
 
@@ -94,52 +142,93 @@ const onDirectionsStateChange = (directionsState) => {
       Directions: directvar,
       userId: user.uid,
     });
+
     alert(JSON.stringify(value));
+    localStorage.removeItem("directionsState")
+    localStorage.removeItem("ingredientsState")
+    
+
   };
 
-  return (
-    <Box
-      component="form"
-      sx={{
-        width:"65%",
-        "& .MuiTextField-root": { m: 1, width: "25ch" },
+return (
+  <Box
+    component="form"
+    sx={{
+      width: "65%",
+      "& .MuiTextField-root": { m: 1, width: "25ch" },
+    }}
+    noValidate
+    autoComplete="off"
+  >
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
       }}
-      noValidate
-      autoComplete="off"
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <SearchAppBar></SearchAppBar>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TextField
-          id="filled-multiline-flexible"
-          label="Recipe Name"
-          placeholder="Enter Recipe Name Here"
-          value={value.RecipeName}
-          onChange={(e) => handleChange(e, "RecipeName")}
-          variant="filled"
-          style={{ justifyContent: "center" }}
-        />
+      <SearchAppBar></SearchAppBar>
+    </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <TextField
+        id="filled-multiline-flexible"
+        label="Recipe Name"
+        placeholder="Enter Recipe Name Here"
+        value={value.RecipeName}
+        onChange={(e) => handleChange(e, "RecipeName")}
+        variant="filled"
+        style={{ justifyContent: "center" }}
+      />
 
-        <Image_Upload onValueChange={handleChangeImg} />
-      </div>
+      <Image_Upload onValueChange={handleChangeImg} />
+    </div>
+    <div margin="auto">
+      <Box sx={{ maxWidth: "100%", margin: "auto" }}>
+        <h4>Ingredients</h4>
+        <Editor
+          toolbar={{
+            options: ["inline", "list"],
+            list: {
+              inDropdown: false,
+              className: undefined,
+              component: undefined,
+              dropdownClassName: undefined,
+              options: ["unordered", "ordered"],
+            },
+
+            inline: {
+              inDropdown: false,
+              className: undefined,
+              component: undefined,
+              dropdownClassName: undefined,
+              options: ["bold", "underline"],
+            },
+          }}
+          editorState={ingredientsState}
+          wrapperClassName="demo-wrapper"
+          editorClassName="demo-editor"
+          onEditorStateChange={(e) => {
+            setIngredientsState && setIngredientsState(e);
+            localStorage.setItem("ingredientsState", draftToHtml(
+              convertToRaw(e.getCurrentContent())
+            ))
+
+          }}
+        />
+      </Box>
+
+      {/* Start of directions */}
       <div margin="auto">
         <Box sx={{ maxWidth: "100%", margin: "auto" }}>
-          <h4>Ingredients</h4>
+          <h4>Directions</h4>
           <Editor
             toolbar={{
               options: ["inline", "list"],
@@ -159,52 +248,24 @@ const onDirectionsStateChange = (directionsState) => {
                 options: ["bold", "underline"],
               },
             }}
-            editorState={editorState}
+            editorState={directionsState}
             wrapperClassName="demo-wrapper"
             editorClassName="demo-editor"
             onEditorStateChange={(e) => {
-              setEditorState && setEditorState(e);
+              setDirectionsState && setDirectionsState(e);
+              console.log(e)
+              localStorage.setItem("directionsState", draftToHtml(
+                convertToRaw(e.getCurrentContent())
+              ))
             }}
           />
         </Box>
-
-        {/* Start of directions */}
-        <div margin="auto">
-          <Box sx={{ maxWidth: "100%", margin: "auto" }}>
-            <h4>Directions</h4>
-            <Editor
-              toolbar={{
-                options: ["inline", "list"],
-                list: {
-                  inDropdown: false,
-                  className: undefined,
-                  component: undefined,
-                  dropdownClassName: undefined,
-                  options: ["unordered", "ordered"],
-                },
-
-                inline: {
-                  inDropdown: false,
-                  className: undefined,
-                  component: undefined,
-                  dropdownClassName: undefined,
-                  options: ["bold", "underline"],
-                },
-              }}
-              editorState={directionsState}
-              wrapperClassName="demo-wrapper"
-              editorClassName="demo-editor"
-              onEditorStateChange={(e) => {
-                setDirectionsState && setDirectionsState(e);
-              }}
-            />
-          </Box>
-        </div>
       </div>
+    </div>
 
-      {/* End of directions */}
-      <div>
-        {/* <TextField
+    {/* End of directions */}
+    <div>
+      {/* <TextField
           id="filled-textarea"
           label="Ingredient List"
           placeholder="Enter your ingredients here
@@ -217,7 +278,7 @@ const onDirectionsStateChange = (directionsState) => {
           onChange={(e) => handleChange(e, "IngredientList")}
           variant="filled"
         /> */}
-        {/* <TextField
+      {/* <TextField
           id="filled-multiline-static"
           label="Directions"
           placeholder="Add your instructions
@@ -231,7 +292,7 @@ const onDirectionsStateChange = (directionsState) => {
           // defaultValue="Default Value"
           variant="filled"
         /> */}
-        {/* <TextField
+      {/* <TextField
           id="filled-multiline-static"
           label="Pro Tips"
           placeholder="List a step and a potential challenge with the recipe
@@ -244,26 +305,27 @@ const onDirectionsStateChange = (directionsState) => {
           // defaultValue="Default Value"
           variant="filled"
         /> */}
-      </div>
+    </div>
 
-      <Button
-        variant="outlined"
-        onClick={handleSubmit}
-        sx={{ width: 200, padding: 1, margin: 2 }}
-      >
-        Submit Your Recipe
-      </Button>
+    <Button
+      variant="outlined"
+      onClick={handleSubmit}
+      sx={{ width: 200, padding: 1, margin: 2 }}
+    >
+      Submit Your Recipe
+    </Button>
 
-      <Button
-        component={Link}
-        to="/recipeFeed"
-        variant="contained"
-        sx={{ width: 200, padding: 1, margin: 2 }}
-      >
-        View Recipe Feed{" "}
-      </Button>
+    <Button
+      component={Link}
+      to="/recipeFeed"
+      variant="contained"
+      sx={{ width: 200, padding: 1, margin: 2 }}
+      
+    >
+      View Recipe Feed{" "}
+    </Button>
 
-      {/* <Button
+    {/* <Button
         component={Link}
         to="/recipe"
         variant="contained"
@@ -271,6 +333,7 @@ const onDirectionsStateChange = (directionsState) => {
       >
         Check Out A Recipe{" "}
       </Button> */}
-    </Box>
-  );
+      
+  </Box>
+);
 }
