@@ -12,9 +12,6 @@ import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "./EditorCSS.css";
-
-
-//Test Import
 import Image_Upload from "./Image_Upload";
 
 export default function RecipeForm(props) {

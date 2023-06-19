@@ -92,7 +92,7 @@ export default function SearchAppBar() {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ width : "90%" }}>
           <AppBar position="static">
             <Toolbar>
               <IconButton
@@ -111,7 +111,7 @@ export default function SearchAppBar() {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                Celebrated recipes{" "}
+                B.W.T.B.{" "}
               </Typography>
               <Search>
                 <SearchIconWrapper>
