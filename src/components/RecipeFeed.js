@@ -18,6 +18,7 @@ import { getDatabase, ref, child, get } from "firebase/database";
 import { useFirebase } from "../FirebaseProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
+import SearchAppBar from "./NavBar";
 
 const darkTheme = createTheme({
   palette: {
@@ -51,6 +52,7 @@ function RecipeReviewCard({ recipe }) {
 
   return (
     <>
+    
       <ThemeProvider theme={darkTheme}>
         <Card sx={{ maxWidth: 345 }}>
           <CardHeader
@@ -142,6 +144,7 @@ export default function RecipeFeed() {
   }, [firebase]);
 
   return recipes.length ? (
+    
     <div class="Container">
       {recipes.map((recipe) => {
         return (

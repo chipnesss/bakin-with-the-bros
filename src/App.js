@@ -11,7 +11,7 @@ function App() {
         <Header />
         <SearchAppBar></SearchAppBar>
         <Box sx={{
-          bgcolor:"#FFFFFF",
+          bgcolor:"#444333",
           margin: "auto",
           borderRadius: '5px 5px 5px 5px',
         }}><Button
