@@ -138,7 +138,7 @@ function ImageUploadCard(props) {
     return (
       <React.Fragment>
         <CardActionArea onClick={imageResetHandler}>
-          <img width="50%" src={selectedFile} />
+          <img width="20%" src={selectedFile} />
         </CardActionArea>
       </React.Fragment>
     );

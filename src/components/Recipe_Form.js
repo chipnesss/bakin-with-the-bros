@@ -149,7 +149,7 @@ return (
   <Box
     component="form"
     sx={{
-      width: "65%",
+      width: "90%",
       "& .MuiTextField-root": { m: 1, width: "25ch" },
     }}
     noValidate
@@ -171,6 +171,7 @@ return (
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        maxWidth: "50%"
       }}
     >
       <TextField
@@ -180,13 +181,13 @@ return (
         value={value.RecipeName}
         onChange={(e) => handleChange(e, "RecipeName")}
         variant="filled"
-        style={{ justifyContent: "center" }}
+        style={{ justifyContent: "center", width: "70%" }}
       />
 
       <Image_Upload onValueChange={handleChangeImg} />
     </div>
     <div margin="auto">
-      <Box sx={{ maxWidth: "100%", margin: "auto" }}>
+      <Box sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
         <h4>Ingredients</h4>
         <Editor
           toolbar={{
@@ -222,7 +223,7 @@ return (
 
       {/* Start of directions */}
       <div margin="auto">
-        <Box sx={{ maxWidth: "100%", margin: "auto" }}>
+        <Box sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
           <h4>Directions</h4>
           <Editor
             toolbar={{
@@ -303,7 +304,7 @@ return (
     </div>
 
     <Button
-      variant="outlined"
+      variant="contained"
       onClick={handleSubmit}
       sx={{ width: 200, padding: 1, margin: 2 }}
     >
@@ -313,7 +314,7 @@ return (
     <Button
       component={Link}
       to="/recipeFeed"
-      variant="contained"
+      variant="outlined"
       sx={{ width: 200, padding: 1, margin: 2 }}
       
     >
