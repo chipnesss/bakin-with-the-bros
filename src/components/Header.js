@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
+import BrunchDiningIcon from '@mui/icons-material/BrunchDining';
+import { IconButton } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -18,7 +20,16 @@ export default function Recipes() {
     <h1>
       {/* <a href="http://localhost:3000/">Bakin' With The Bros.</a>{" "} */}
       Bakin' With The Bros.
-      <FastfoodIcon />
+      <IconButton >
+        <BrunchDiningIcon
+        sx={{
+          color: "#FFFFFF",
+          fontSize: "55px",
+          
+        }}
+      />
+        
+      </IconButton>
     </h1>
   );
 }
