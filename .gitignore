@@ -4,6 +4,8 @@
 #api keys
 /src/firebase/apiKeys.json
 
+#firebase hosting (for cache conflicts)
+.firebase/hosting
 
 
 # dependencies

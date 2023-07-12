@@ -16,12 +16,12 @@ import Image_Upload from "./Image_Upload";
 
 export default function RecipeForm(props) {
   const [value, setValue] = React.useState({
-    RecipeName: "",
+    RecipeName: localStorage.getItem("RecipeName") || "",
     IngredientList: "",
     Directions: "",
     ProTips: "",
     Date: new Date().toLocaleDateString(),
-    PhotoUrl: "",
+    PhotoUrl: localStorage.getItem("PhotoUrl") || "",
   });
   const database = useFirebase();
 
@@ -41,33 +41,32 @@ export default function RecipeForm(props) {
     if (html) {
       const contentBlock = htmlToDraft(html);
       if (contentBlock) {
-        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        const contentState = ContentState.createFromBlockArray(
+          contentBlock.contentBlocks
+        );
         const editorState = EditorState.createWithContent(contentState);
-        return editorState
-      }
-
-      else {
-        return EditorState.createEmpty()
+        return editorState;
+      } else {
+        return EditorState.createEmpty();
       }
     }
-  }
+  };
 
   const getInitialDirectionState = () => {
     const html = localStorage.getItem("directionsState");
     if (html) {
       const contentBlock = htmlToDraft(html);
       if (contentBlock) {
-        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        const contentState = ContentState.createFromBlockArray(
+          contentBlock.contentBlocks
+        );
         const editorState = EditorState.createWithContent(contentState);
-        return editorState
-      }
-
-      else {
-        return EditorState.createEmpty()
+        return editorState;
+      } else {
+        return EditorState.createEmpty();
       }
     }
-  }
-
+  };
 
   const [directionsState, setDirectionsState] = React.useState(
     getInitialDirectionState()
@@ -81,33 +80,30 @@ export default function RecipeForm(props) {
     setEditorState({
       directionsState,
     });
-    console.log("function called in general")
-    localStorage.setItem("directionsState", directionsState)
+    console.log("function called in general");
+    localStorage.setItem("directionsState", directionsState);
   };
 
   const onIngredientsStateChange = (ingredientsState) => {
     setEditorState({
       ingredientsState,
     });
-    console.log("function called in general")
-    localStorage.setItem("ingredientsState", ingredientsState)
+    console.log("function called in general");
+    localStorage.setItem("ingredientsState", ingredientsState);
   };
 
-
-
   // end test
-
-
-
 
   const handleChange = (event, field) => {
     // setValue(event.target.value);
     setValue({ ...value, [field]: event.target.value });
+    localStorage.setItem(field, event.target.value);
   };
 
   const handleChangeImg = (downloadURL) => {
     // setValue(event.target.value);
     setValue({ ...value, PhotoUrl: downloadURL });
+    localStorage.setItem("PhotoUrl", downloadURL);
   };
 
   const handleSubmit = (e) => {
@@ -138,93 +134,61 @@ export default function RecipeForm(props) {
       userId: user.uid,
     });
 
-    alert(JSON.stringify(value));
-    localStorage.removeItem("directionsState")
-    localStorage.removeItem("ingredientsState")
-    
-
+    localStorage.removeItem("RecipeName");
+    localStorage.removeItem("PhotoUrl");
+    localStorage.removeItem("directionsState");
+    localStorage.removeItem("ingredientsState");
   };
 
-return (
-  <Box
-    component="form"
-    sx={{
-      width: "90%",
-      "& .MuiTextField-root": { m: 1, width: "25ch" },
-    }}
-    noValidate
-    autoComplete="off"
-  >
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
+  return (
+    <Box
+      component="form"
+      sx={{
+        width: "90%",
+        "& .MuiTextField-root": { m: 1, width: "25ch" },
       }}
+      noValidate
+      autoComplete="off"
     >
-      <SearchAppBar></SearchAppBar>
-    </div>
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        maxWidth: "50%"
-      }}
-    >
-      <TextField
-        id="filled-multiline-flexible"
-        label="Recipe Name"
-        placeholder="Enter Recipe Name Here"
-        value={value.RecipeName}
-        onChange={(e) => handleChange(e, "RecipeName")}
-        variant="filled"
-        style={{ justifyContent: "center", width: "70%" }}
-      />
-
-      <Image_Upload onValueChange={handleChangeImg} />
-    </div>
-    <div margin="auto">
-      <Box sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
-        <h4>Ingredients</h4>
-        <Editor
-          toolbar={{
-            options: ["inline", "list"],
-            list: {
-              inDropdown: false,
-              className: undefined,
-              component: undefined,
-              dropdownClassName: undefined,
-              options: ["unordered", "ordered"],
-            },
-
-            inline: {
-              inDropdown: false,
-              className: undefined,
-              component: undefined,
-              dropdownClassName: undefined,
-              options: ["bold", "underline"],
-            },
-          }}
-          editorState={ingredientsState}
-          wrapperClassName="demo-wrapper"
-          editorClassName="demo-editor"
-          onEditorStateChange={(e) => {
-            setIngredientsState && setIngredientsState(e);
-            localStorage.setItem("ingredientsState", draftToHtml(
-              convertToRaw(e.getCurrentContent())
-            ))
-
-          }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <SearchAppBar></SearchAppBar>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          maxWidth: "50%",
+        }}
+      >
+        <TextField
+          id="filled-multiline-flexible"
+          label="Recipe Name"
+          placeholder="Enter Recipe Name Here"
+          value={value.RecipeName}
+          onChange={(e) => handleChange(e, "RecipeName")}
+          variant="filled"
+          style={{ justifyContent: "center", width: "70%" }}
         />
-      </Box>
 
-      {/* Start of directions */}
+        <Image_Upload
+          mainState={value.PhotoUrl ? "uploaded" : null}
+          imageUploaded={value.PhotoUrl ? 1 : null}
+          selectedFile={value.PhotoUrl || null}
+          onValueChange={handleChangeImg}
+        />
+      </div>
       <div margin="auto">
         <Box sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
-          <h4>Directions</h4>
+          <h4>Ingredients</h4>
           <Editor
             toolbar={{
               options: ["inline", "list"],
@@ -244,24 +208,61 @@ return (
                 options: ["bold", "underline"],
               },
             }}
-            editorState={directionsState}
+            editorState={ingredientsState}
             wrapperClassName="demo-wrapper"
             editorClassName="demo-editor"
             onEditorStateChange={(e) => {
-              setDirectionsState && setDirectionsState(e);
-              console.log(e)
-              localStorage.setItem("directionsState", draftToHtml(
-                convertToRaw(e.getCurrentContent())
-              ))
+              setIngredientsState && setIngredientsState(e);
+              localStorage.setItem(
+                "ingredientsState",
+                draftToHtml(convertToRaw(e.getCurrentContent()))
+              );
             }}
           />
         </Box>
-      </div>
-    </div>
 
-    {/* End of directions */}
-    <div>
-      {/* <TextField
+        {/* Start of directions */}
+        <div margin="auto">
+          <Box sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
+            <h4>Directions</h4>
+            <Editor
+              toolbar={{
+                options: ["inline", "list"],
+                list: {
+                  inDropdown: false,
+                  className: undefined,
+                  component: undefined,
+                  dropdownClassName: undefined,
+                  options: ["unordered", "ordered"],
+                },
+
+                inline: {
+                  inDropdown: false,
+                  className: undefined,
+                  component: undefined,
+                  dropdownClassName: undefined,
+                  options: ["bold", "underline"],
+                },
+              }}
+              editorState={directionsState}
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              onEditorStateChange={(e) => {
+                setDirectionsState && setDirectionsState(e);
+                console.log(e);
+                localStorage.setItem(
+                  "directionsState",
+                  draftToHtml(convertToRaw(e.getCurrentContent()))
+                );
+              }}
+            />
+          </Box>
+        </div>
+      </div>
+
+      {/* End of directions */}
+      <div>
+        {/* <TextField
           id="filled-textarea"
           label="Ingredient List"
           placeholder="Enter your ingredients here
@@ -274,7 +275,7 @@ return (
           onChange={(e) => handleChange(e, "IngredientList")}
           variant="filled"
         /> */}
-      {/* <TextField
+        {/* <TextField
           id="filled-multiline-static"
           label="Directions"
           placeholder="Add your instructions
@@ -288,7 +289,7 @@ return (
           // defaultValue="Default Value"
           variant="filled"
         /> */}
-      {/* <TextField
+        {/* <TextField
           id="filled-multiline-static"
           label="Pro Tips"
           placeholder="List a step and a potential challenge with the recipe
@@ -301,27 +302,26 @@ return (
           // defaultValue="Default Value"
           variant="filled"
         /> */}
-    </div>
+      </div>
 
-    <Button
-      variant="contained"
-      onClick={handleSubmit}
-      sx={{ width: 200, padding: 1, margin: 2 }}
-    >
-      Submit Your Recipe
-    </Button>
+      <Button
+        variant="contained"
+        onClick={handleSubmit}
+        sx={{ width: 200, padding: 1, margin: 2 }}
+      >
+        Submit Your Recipe
+      </Button>
 
-    <Button
-      component={Link}
-      to="/recipeFeed"
-      variant="outlined"
-      sx={{ width: 200, padding: 1, margin: 2 }}
-      
-    >
-      View Recipe Feed{" "}
-    </Button>
+      <Button
+        component={Link}
+        to="/recipeFeed"
+        variant="outlined"
+        sx={{ width: 200, padding: 1, margin: 2 }}
+      >
+        View Recipe Feed{" "}
+      </Button>
 
-    {/* <Button
+      {/* <Button
         component={Link}
         to="/recipe"
         variant="contained"
@@ -329,7 +329,6 @@ return (
       >
         Check Out A Recipe{" "}
       </Button> */}
-      
-  </Box>
-);
+    </Box>
+  );
 }

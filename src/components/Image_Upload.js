@@ -25,9 +25,15 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 // });
 
 function ImageUploadCard(props) {
-  const [mainState, setMainState] = React.useState("initial");
-  const [imageUploaded, setImageUploaded] = React.useState(0);
-  const [selectedFile, setSelectedFile] = React.useState(null);
+  const [mainState, setMainState] = React.useState(
+    props.mainState || "initial"
+  );
+  const [imageUploaded, setImageUploaded] = React.useState(
+    props.imageUploaded || 0
+  );
+  const [selectedFile, setSelectedFile] = React.useState(
+    props.selectedFile || null
+  );
 
   const handleUploadClick = (event) => {
     console.log();

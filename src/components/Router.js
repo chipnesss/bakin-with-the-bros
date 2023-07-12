@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import App from "../App";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import RecipeView from "./RecipeView";
-import RecipeForm from "./Recipe_Form"
-import RecipeFormView from "./RecipeFormView"
+import RecipeForm from "./Recipe_Form";
+import RecipeFormView from "./RecipeFormView";
 import SignInView from "./SignInView";
 import SignUpView from "./SignUpView";
 import { Redirect } from "react-router-dom";
@@ -52,10 +52,14 @@ const Router = () => {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={App} />
-            <PrivateRoute exact path="/recipeCreation" component={RecipeFormView} />
+            <PrivateRoute
+              exact
+              path="/recipeCreation"
+              component={RecipeFormView}
+            />
             <Route exact path="/signup" component={SignUpView} />
             <Route exact path="/signin" component={SignInView} />
-            <PrivateRoute exact path="/recipeFeed" component={RecipeFeed} />
+            <Route exact path="/recipeFeed" component={RecipeFeed} />
             <Route path="/recipe/:RecipeId" component={RecipeView} />
           </Switch>
         </BrowserRouter>
