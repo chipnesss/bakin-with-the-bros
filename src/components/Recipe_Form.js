@@ -114,9 +114,9 @@ export default function RecipeForm(props) {
     let messageContentHTML = null;
     let directvar = null;
 
-    if (editorState && editorState.getCurrentContent()) {
+    if (ingredientsState && ingredientsState.getCurrentContent()) {
       messageContentHTML = draftToHtml(
-        convertToRaw(editorState.getCurrentContent())
+        convertToRaw(ingredientsState.getCurrentContent())
       );
     }
     if (directionsState && directionsState.getCurrentContent()) {
