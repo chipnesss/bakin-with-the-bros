@@ -7,7 +7,7 @@ import RecipeFormView from "./RecipeFormView";
 import SignInView from "./SignInView";
 import SignUpView from "./SignUpView";
 import { Redirect } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import RecipeFeed from "./RecipeFeed";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FirebaseProvider, useFirebase } from "../FirebaseProvider";
@@ -23,6 +23,31 @@ const Router = () => {
     const firebase = useFirebase();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const redirectToDesiredScreen = () => {
+      const auth = getAuth();
+      const isUserInSession = Object.keys(sessionStorage).filter((ssi) =>
+        ssi.includes("firebase:authUser")
+      );
+
+      if (isUserInSession) {
+        onAuthStateChanged(auth, (user) => {
+          // if () {
+
+          // }
+          if (user) {
+            return <Route {...options} component={component} />;
+            // ...
+          } else {
+            return <h1>loading...</h1>;
+          }
+        });
+        return <h1>loading...</h1>;
+      } else {
+        return <Redirect to="/signup" />;
+      }
+    };
+
     useEffect(() => {
       console.log(firebase);
       if (firebase) {
@@ -42,7 +67,7 @@ const Router = () => {
     if (user && !loading) {
       return <Route {...options} component={component} />;
     } else {
-      return <Redirect to="/signup" />;
+      return redirectToDesiredScreen();
     }
   };
 
