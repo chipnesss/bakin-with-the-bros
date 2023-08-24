@@ -29,6 +29,8 @@ import {
   browserSessionPersistence,
 } from "firebase/auth";
 
+import { useLocation } from "react-router-dom";
+
 function Copyright(props) {
   return (
     <Typography
@@ -66,6 +68,8 @@ export default function SignUp() {
 
   function SignUpWithGoogle(e) {
     const auth = getAuth();
+    // const location = useLocation();
+    const searchParams = new URLSearchParams(document.location.search);
     setPersistence(auth, browserSessionPersistence)
       .then(() => {
         const provider = new GoogleAuthProvider();
@@ -74,7 +78,8 @@ export default function SignUp() {
         // occurred.
         signInWithPopup(auth, provider).then(() => {
           console.log("a string it doesnt really matter what it is");
-          history.push("/");
+          history.push(searchParams.get("origin"));
+          console.log(searchParams.get("origin"));
         });
       })
       .catch((error) => {

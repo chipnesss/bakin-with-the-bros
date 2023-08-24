@@ -11,6 +11,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import RecipeFeed from "./RecipeFeed";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FirebaseProvider, useFirebase } from "../FirebaseProvider";
+import { useHistory } from "react-router-dom";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,56 +19,57 @@ const darkTheme = createTheme({
   },
 });
 
+const authPromise = (auth) =>
+  new Promise((resolve, reject) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+
+        resolve({ user, userIsHere: true });
+      }
+    });
+    setTimeout(() => {
+      resolve({ user: null, userIsHere: false });
+    }, 3000);
+  });
+
 const Router = () => {
   const PrivateRoute = ({ component, ...options }) => {
     const firebase = useFirebase();
-    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const redirectToDesiredScreen = () => {
-      const auth = getAuth();
-      const isUserInSession = Object.keys(sessionStorage).filter((ssi) =>
-        ssi.includes("firebase:authUser")
-      );
-
-      if (isUserInSession) {
-        onAuthStateChanged(auth, (user) => {
-          // if () {
-
-          // }
-          if (user) {
-            return <Route {...options} component={component} />;
-            // ...
-          } else {
-            return <h1>loading...</h1>;
-          }
-        });
-        return <h1>loading...</h1>;
-      } else {
-        return <Redirect to="/signup" />;
-      }
-    };
+    const [authenticatedUser, setAuthenticatedUser] = useState(null);
+    let history = useHistory();
 
     useEffect(() => {
+      setLoading(true);
       console.log(firebase);
+
       if (firebase) {
-        const auth = getAuth(firebase.app);
-        const user = auth.currentUser;
-        console.log(user);
-        setUser(user);
-        setLoading(false);
+        const auth = getAuth();
+        authPromise(auth).then(({ user }) => {
+          console.log(user);
+          setAuthenticatedUser(user);
+          // Stop loader
+          setLoading(false);
+        });
       }
     }, [firebase]);
+
+    // Move the await into a useEffect and based on the results of the authPromise we need to change state
+    // but would ultimately return redirect from the render
+
+    // Show loader
+
     // const auth = getAuth();
 
     if (loading || !firebase) {
       return <h1>loading...</h1>;
     }
     // console.log("console log" + user);
-    if (user && !loading) {
+    if (authenticatedUser && !loading) {
       return <Route {...options} component={component} />;
     } else {
-      return redirectToDesiredScreen();
+      return <Redirect to={`/signup?origin=${history.location.pathname}`} />;
     }
   };
 
