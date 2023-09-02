@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const darkTheme = createTheme({
   palette: {
@@ -92,10 +93,34 @@ export default function SearchAppBar() {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-        <Box sx={{ width : "90%" }}>
+        <Box sx={{ width: "90%" }}>
           <AppBar position="static">
             <Toolbar>
-              <IconButton
+              <Button
+                component={Link}
+                to="/"
+                variant="contained"
+                sx={{ width: 200, padding: 1, margin: 2 }}
+              >
+                Home{" "}
+              </Button>
+              <Button
+                component={Link}
+                to="/recipeCreation"
+                variant="contained"
+                sx={{ width: 200, padding: 1, margin: 2 }}
+              >
+                Create A Recipe{" "}
+              </Button>
+              <Button
+                component={Link}
+                to="/recipeFeed"
+                variant="contained"
+                sx={{ width: 200, padding: 1, margin: 2 }}
+              >
+                View Recipe Feed{" "}
+              </Button>
+              {/* <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
@@ -103,7 +128,7 @@ export default function SearchAppBar() {
                 sx={{ mr: 2 }}
               >
                 <MenuIcon />
-              </IconButton>
+              </IconButton> */}
               {/* <Header /> */}
               <Typography
                 variant="h6"
@@ -111,7 +136,7 @@ export default function SearchAppBar() {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                B.W.T.B.{" "}
+                {" "}
               </Typography>
               <Search>
                 <SearchIconWrapper>

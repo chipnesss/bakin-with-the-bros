@@ -70,7 +70,7 @@ export default function SignUp() {
     const auth = getAuth();
     // const location = useLocation();
     const searchParams = new URLSearchParams(document.location.search);
-    setPersistence(auth, browserSessionPersistence)
+    setPersistence(auth, inMemoryPersistence)
       .then(() => {
         const provider = new GoogleAuthProvider();
         // In memory persistence will be applied to the signed in Google user

@@ -52,63 +52,60 @@ function RecipeReviewCard({ recipe }) {
 
   return (
     <>
-    
-      <ThemeProvider theme={darkTheme}>
-        <Card sx={{ maxWidth: 345 }}>
-          <CardHeader
-            avatar={
-              <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
-                {}
-              </Avatar>
-            }
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title={recipe.RecipeName}
-            subheader={recipe.Date}
-          />
-          <CardMedia
-            component="img"
-            height="194"
-            image={
-              recipe.PhotoUrl ||
-              "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
-            }
-            alt="Paella dish"
-            onClick={handleRecipeClick}
-          />
+      <Card sx={{ maxWidth: 345 }}>
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
+              {}
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={recipe.RecipeName}
+          subheader={recipe.Date}
+        />
+        <CardMedia
+          component="img"
+          height="194"
+          image={
+            recipe.PhotoUrl ||
+            "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
+          }
+          alt="Paella dish"
+          onClick={handleRecipeClick}
+        />
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {""}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton aria-label="add to favorites">
+            <FavoriteIcon />
+          </IconButton>
+          <IconButton aria-label="share">
+            <ShareIcon />
+          </IconButton>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+            // theme= darkTheme
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {""}
-            </Typography>
+            <Typography paragraph>Ingredients:</Typography>
+            <Typography paragraph>{recipe.IngredientList}</Typography>
           </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-              // theme= darkTheme
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph>Ingredients:</Typography>
-              <Typography paragraph>{recipe.IngredientList}</Typography>
-            </CardContent>
-          </Collapse>
-        </Card>
-      </ThemeProvider>
+        </Collapse>
+      </Card>
     </>
   );
 }
@@ -144,7 +141,6 @@ export default function RecipeFeed() {
   }, [firebase]);
 
   return recipes.length ? (
-    
     <div class="Container">
       {recipes.map((recipe) => {
         return (

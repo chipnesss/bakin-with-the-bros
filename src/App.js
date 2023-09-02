@@ -3,6 +3,8 @@ import "./App.css";
 import Header from "./components/Header";
 import SearchAppBar from "./components/NavBar";
 import { Link } from "react-router-dom";
+import HighlightRecipes from "./components/HighlightRecipes";
+import { Grid } from "@mui/material";
 
 function App() {
   return (
@@ -10,30 +12,17 @@ function App() {
       <div className="App-header">
         <Header />
         <SearchAppBar></SearchAppBar>
-        <Box sx={{
-          bgcolor:"#444333",
-          margin: "auto",
-          borderRadius: '5px 5px 5px 5px',
-        }}><Button
-      component={Link}
-      to="/recipeCreation"
-      variant="contained"
-      sx={{ width: 200, padding: 1, margin: 2 }}
-      
-    >
-      Create A Recipe{" "}
-    </Button>
-        <Button
-      component={Link}
-      to="/recipeFeed"
-      variant="contained"
-      sx={{ width: 200, padding: 1, margin: 2 }}
-      
-    >
-      View Recipe Feed{" "}
-    </Button>
-     </Box>
-        </div></div>
+        <Grid
+          sx={{
+            bgcolor: "rgba(255, 255, 255, 0.15)",
+            margin: "auto",
+            borderRadius: "5px 5px 5px 5px",
+          }}
+        >
+          <HighlightRecipes></HighlightRecipes>
+        </Grid>
+      </div>
+    </div>
   );
 }
 

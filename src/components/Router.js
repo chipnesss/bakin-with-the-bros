@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import App from "../App";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import RecipeView from "./RecipeView";
+import RecipeFeedView from "./RecipeFeedView";
 import RecipeForm from "./Recipe_Form";
 import RecipeFormView from "./RecipeFormView";
 import SignInView from "./SignInView";
@@ -12,6 +13,9 @@ import RecipeFeed from "./RecipeFeed";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FirebaseProvider, useFirebase } from "../FirebaseProvider";
 import { useHistory } from "react-router-dom";
+import { Box } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import { getDatabase, ref, set, push } from "firebase/database";
 
 const darkTheme = createTheme({
   palette: {
@@ -19,12 +23,21 @@ const darkTheme = createTheme({
   },
 });
 
-const authPromise = (auth) =>
+const authPromise = (auth, database) =>
   new Promise((resolve, reject) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
 
+        // Working on recalling and storing user display names
+
+        // const userListRef = ref(database, "users");
+        // const newUserRef = push(userListRef);
+        // set(newUserRef, {
+        //   userId: user.uid,
+        //   photo: user.photoURL,
+        //   userName: user.displayName,
+        // });
         resolve({ user, userIsHere: true });
       }
     });
@@ -39,6 +52,7 @@ const Router = () => {
     const [loading, setLoading] = useState(true);
     const [authenticatedUser, setAuthenticatedUser] = useState(null);
     let history = useHistory();
+    const database = useFirebase();
 
     useEffect(() => {
       setLoading(true);
@@ -46,8 +60,9 @@ const Router = () => {
 
       if (firebase) {
         const auth = getAuth();
-        authPromise(auth).then(({ user }) => {
-          console.log(user);
+        authPromise(auth, database).then(({ user }) => {
+          console.log({ user });
+
           setAuthenticatedUser(user);
           // Stop loader
           setLoading(false);
@@ -63,7 +78,21 @@ const Router = () => {
     // const auth = getAuth();
 
     if (loading || !firebase) {
-      return <h1>loading...</h1>;
+      return (
+        <Box
+          sx={{
+            bgcolor: "#282c34",
+            width: "100vw",
+            height: "100vh",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            style={{ width: "15%", margin: "0 25%" }}
+            src="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB-PanCham.gif?alt=media&token=f0aa8a14-721e-4241-9cc9-1124fb62f1f1"
+          />
+        </Box>
+      );
     }
     // console.log("console log" + user);
     if (authenticatedUser && !loading) {
@@ -86,7 +115,8 @@ const Router = () => {
             />
             <Route exact path="/signup" component={SignUpView} />
             <Route exact path="/signin" component={SignInView} />
-            <Route exact path="/recipeFeed" component={RecipeFeed} />
+            {/* <Route exact path="/recipeFeed" component={RecipeFeed} /> */}
+            <Route exact path="/recipeFeed" component={RecipeFeedView} />
             <Route path="/recipe/:RecipeId" component={RecipeView} />
           </Switch>
         </BrowserRouter>
