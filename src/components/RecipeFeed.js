@@ -19,6 +19,9 @@ import { useFirebase } from "../FirebaseProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import SearchAppBar from "./NavBar";
+import { Grid } from "@mui/material";
+import draftToHtml from "draftjs-to-html";
+import { convertToRaw } from "draft-js";
 
 const darkTheme = createTheme({
   palette: {
@@ -51,62 +54,83 @@ function RecipeReviewCard({ recipe }) {
   };
 
   return (
-    <>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
-              {}
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={recipe.RecipeName}
-          subheader={recipe.Date}
-        />
-        <CardMedia
-          component="img"
-          height="194"
-          image={
-            recipe.PhotoUrl ||
-            "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
-          }
-          alt="Paella dish"
-          onClick={handleRecipeClick}
-        />
+    // <Grid container spacing={"2"}>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardHeader
+        // avatar={
+        //   <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
+        //     {}
+        //   </Avatar>
+        // }
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title={recipe.RecipeName}
+        // subheader={recipe.Date}
+      />
+      <CardMedia
+        component="img"
+        height={250}
+        image={
+          recipe.PhotoUrl ||
+          "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB%20PanCham-01.png?alt=media&token=935d360e-9c5d-4f2e-92a6-49be1f0101fd"
+        }
+        alt="Paella dish"
+        onClick={handleRecipeClick}
+      />
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {""}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Typography variant="body2" color="text.secondary">
+          Ingredients List
+        </Typography>
+        {/* <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton> */}
+        {/* <IconButton aria-label="share">
+          <ShareIcon />
+        </IconButton> */}
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          // theme= darkTheme
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {""}
+          <Typography paragraph>
+            <h3>Ingredients</h3>
+          </Typography>
+          <Typography paragraph>
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  recipe && recipe.IngredientList ? recipe.IngredientList : "",
+              }}
+            />
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+              // theme= darkTheme
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
           </Typography>
         </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            // theme= darkTheme
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Ingredients:</Typography>
-            <Typography paragraph>{recipe.IngredientList}</Typography>
-          </CardContent>
-        </Collapse>
-      </Card>
-    </>
+      </Collapse>
+    </Card>
+    // </Grid>
   );
 }
 
@@ -141,17 +165,33 @@ export default function RecipeFeed() {
   }, [firebase]);
 
   return recipes.length ? (
-    <div class="Container">
+    <Grid
+      container
+      spacing={4}
+      border={"25px"}
+      margin={"15px"}
+      alignItems="center"
+      justifyContent="center"
+      bgcolor={"rgba(255, 255, 255, 0.05)"}
+      width={"90%"}
+      columns={{ xs: 4, md: 8, lg: 12 }}
+    >
       {recipes.map((recipe) => {
         return (
-          <>
-            <div className="Item">
-              <RecipeReviewCard recipe={recipe} />
-            </div>
-          </>
+          <Grid
+            item
+            xs={6}
+            lg={2}
+            spacing={4}
+            alignItems="center"
+            justifyContent="center"
+            margin={"15px"}
+          >
+            <RecipeReviewCard recipe={recipe} />
+          </Grid>
         );
       })}
-    </div>
+    </Grid>
   ) : (
     <div></div>
   );

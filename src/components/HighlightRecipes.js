@@ -100,7 +100,7 @@ export default function HighlightRecipes() {
             component={Link}
             to="/recipeFeed"
             variant="contained"
-            sx={{ width: 200, padding: 1, margin: 2 }}
+            xs={{ width: 200, padding: 1, margin: 2 }}
           >
             View Recipe Feed{" "}
           </Button>
