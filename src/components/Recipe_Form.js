@@ -13,11 +13,10 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "./EditorCSS.css";
 import Image_Upload from "./Image_Upload";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import ActionAlerts from "./Alerts";
 import { useState } from "react";
 import { Grid } from "@mui/material";
-
 
 export default function RecipeForm(props) {
   const [value, setValue] = React.useState({
@@ -111,27 +110,53 @@ export default function RecipeForm(props) {
     localStorage.setItem("PhotoUrl", downloadURL);
   };
 
+  // Alert Testing Start
+  const [showAlert, setShowAlert] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
-// Alert Testing Start
-const [showAlert, setShowAlert] = useState(false);
+  const handleButtonClick = () => {
+    setShowAlert(true);
+  };
 
-const handleButtonClick = () => {
-  setShowAlert(true);
-};
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
 
-const handleCloseAlert = () => {
-  setShowAlert(false);
-};
-// Alert Testing End
+  const handleCloseError = () => {
+    setShowError(false);
+  };
+  // Alert Testing End
 
-// function submit_and_alert(e) {
-//   handleSubmit()
-//   handleButtonClick()
-  
-// }
+  // function submit_and_alert(e) {
+  //   handleSubmit()
+  //   handleButtonClick()
+  const success_messages = [
+    "Dang, thats a good lookin' recipe...",
+    "It appears you did not add enough garlic...",
+    "Thank you for seasoning your chicken...",
+    "Hear me out... Why not more salt?",
+    "Wow, what a recipe!",
+    "Clearly you're a professional!",
+    "Dang, where did you learn to cook like that?",
+  ];
+  const get_success_message = () => {
+    return success_messages.sort(() => 0.5 - Math.random())[0];
+  };
+  //  recipeList.sort(() => 0.5 - Math.random());
+
+  // }
   const handleSubmit = (e) => {
     let messageContentHTML = null;
     let directvar = null;
+
+    setShowError(false);
+    setShowAlert(false);
+
+    if (!ingredientsState || !directionsState || !value.RecipeName) {
+      setShowError(true);
+      return;
+    }
 
     if (ingredientsState && ingredientsState.getCurrentContent()) {
       messageContentHTML = draftToHtml(
@@ -143,7 +168,7 @@ const handleCloseAlert = () => {
         convertToRaw(directionsState.getCurrentContent())
       );
     }
-    console.log(messageContentHTML);
+    // console.log(messageContentHTML);
     // Needs to get the photo URL
     const auth = getAuth();
     const user = auth.currentUser;
@@ -156,8 +181,9 @@ const handleCloseAlert = () => {
       Directions: directvar,
       userId: user.uid,
     });
+
+    setSuccessMessage(get_success_message());
     setShowAlert(true);
-    
 
     localStorage.removeItem("RecipeName");
     localStorage.removeItem("PhotoUrl");
@@ -198,7 +224,6 @@ const handleCloseAlert = () => {
           maxWidth: "50%",
         }}
       >
-        
         <TextField
           id="filled-multiline-flexible"
           label="Recipe Name"
@@ -218,7 +243,7 @@ const handleCloseAlert = () => {
       </Grid>
       <Grid margin="auto">
         <Grid sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
-            <h2>Ingredients</h2>
+          <h2>Ingredients</h2>
           <Editor
             toolbar={{
               options: ["inline", "list"],
@@ -283,20 +308,31 @@ const handleCloseAlert = () => {
                   "directionsState",
                   draftToHtml(convertToRaw(e.getCurrentContent()))
                 );
-                
               }}
-              
             />
             <Grid>
-          {showAlert && (
-        <Alert severity="success" sx={{margin:"auto", width:"auto"}} onClose={handleCloseAlert}>
-          Dang, thats a good lookin' recipe...
-        </Alert>
-      )}
+              {showError && (
+                <Alert
+                  severity="error"
+                  sx={{ margin: "auto", width: "auto" }}
+                  onClose={handleCloseError}
+                >
+                  Make sure your recipe is completely filled out!
+                </Alert>
+              )}
+            </Grid>
+            <Grid>
+              {showAlert && (
+                <Alert
+                  severity="success"
+                  sx={{ margin: "auto", width: "auto" }}
+                  onClose={handleCloseAlert}
+                >
+                  {successMessage}
+                </Alert>
+              )}
+            </Grid>
           </Grid>
-          </Grid>
-          
-          
         </Grid>
       </Grid>
 
@@ -343,23 +379,15 @@ const handleCloseAlert = () => {
           variant="filled"
         /> */}
       </Grid>
-      <Grid>
-  
+      <Grid></Grid>
 
-      
-    </Grid>
-    
       <Button
         variant="contained"
         onClick={handleSubmit}
-        
         sx={{ width: 200, padding: 1, margin: 2 }}
-
-
       >
         Submit Your Recipe
       </Button>
-      
 
       <Button
         component={Link}
@@ -369,7 +397,6 @@ const handleCloseAlert = () => {
       >
         View Recipe Feed{" "}
       </Button>
-      
 
       {/* <Button
         component={Link}
@@ -379,12 +406,7 @@ const handleCloseAlert = () => {
       >
         Check Out A Recipe{" "}
       </Button> */}
-       <Grid>
-
-
-      
-    </Grid>
+      <Grid></Grid>
     </Box>
-    
   );
 }

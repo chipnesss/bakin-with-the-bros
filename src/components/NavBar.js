@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+import MenuPopupState from "./MenuPopupState";
 
 const darkTheme = createTheme({
   palette: {
@@ -120,6 +121,7 @@ export default function SearchAppBar() {
               >
                 View Recipe Feed{" "}
               </Button>
+              {/* <MenuPopupState></MenuPopupState> */}
               {/* <IconButton
                 size="large"
                 edge="start"
