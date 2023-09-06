@@ -13,6 +13,11 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "./EditorCSS.css";
 import Image_Upload from "./Image_Upload";
+import Alert from '@mui/material/Alert';
+import ActionAlerts from "./Alerts";
+import { useState } from "react";
+import { Grid } from "@mui/material";
+
 
 export default function RecipeForm(props) {
   const [value, setValue] = React.useState({
@@ -106,6 +111,24 @@ export default function RecipeForm(props) {
     localStorage.setItem("PhotoUrl", downloadURL);
   };
 
+
+// Alert Testing Start
+const [showAlert, setShowAlert] = useState(false);
+
+const handleButtonClick = () => {
+  setShowAlert(true);
+};
+
+const handleCloseAlert = () => {
+  setShowAlert(false);
+};
+// Alert Testing End
+
+// function submit_and_alert(e) {
+//   handleSubmit()
+//   handleButtonClick()
+  
+// }
   const handleSubmit = (e) => {
     let messageContentHTML = null;
     let directvar = null;
@@ -133,6 +156,8 @@ export default function RecipeForm(props) {
       Directions: directvar,
       userId: user.uid,
     });
+    setShowAlert(true);
+    
 
     localStorage.removeItem("RecipeName");
     localStorage.removeItem("PhotoUrl");
@@ -141,6 +166,9 @@ export default function RecipeForm(props) {
   };
 
   return (
+    // Alert Testing Start
+
+    // Alert Testing
     <Box
       component="form"
       sx={{
@@ -150,7 +178,7 @@ export default function RecipeForm(props) {
       noValidate
       autoComplete="off"
     >
-      <div
+      <Grid
         style={{
           display: "flex",
           flexDirection: "row",
@@ -159,8 +187,9 @@ export default function RecipeForm(props) {
         }}
       >
         <SearchAppBar></SearchAppBar>
-      </div>
-      <div
+      </Grid>
+      <h2>Recipe</h2>
+      <Grid
         style={{
           display: "flex",
           flexDirection: "row",
@@ -169,6 +198,7 @@ export default function RecipeForm(props) {
           maxWidth: "50%",
         }}
       >
+        
         <TextField
           id="filled-multiline-flexible"
           label="Recipe Name"
@@ -185,10 +215,10 @@ export default function RecipeForm(props) {
           selectedFile={value.PhotoUrl || null}
           onValueChange={handleChangeImg}
         />
-      </div>
-      <div margin="auto">
-        <Box sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
-          <h4>Ingredients</h4>
+      </Grid>
+      <Grid margin="auto">
+        <Grid sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
+            <h2>Ingredients</h2>
           <Editor
             toolbar={{
               options: ["inline", "list"],
@@ -219,12 +249,12 @@ export default function RecipeForm(props) {
               );
             }}
           />
-        </Box>
+        </Grid>
 
         {/* Start of directions */}
-        <div margin="auto">
-          <Box sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
-            <h4>Directions</h4>
+        <Grid margin="auto">
+          <Grid sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
+            <h2>Directions</h2>
             <Editor
               toolbar={{
                 options: ["inline", "list"],
@@ -249,19 +279,29 @@ export default function RecipeForm(props) {
               editorClassName="demo-editor"
               onEditorStateChange={(e) => {
                 setDirectionsState && setDirectionsState(e);
-                console.log(e);
                 localStorage.setItem(
                   "directionsState",
                   draftToHtml(convertToRaw(e.getCurrentContent()))
                 );
+                
               }}
+              
             />
-          </Box>
-        </div>
-      </div>
+            <Grid>
+          {showAlert && (
+        <Alert severity="success" sx={{margin:"auto", width:"auto"}} onClose={handleCloseAlert}>
+          Dang, thats a good lookin' recipe...
+        </Alert>
+      )}
+          </Grid>
+          </Grid>
+          
+          
+        </Grid>
+      </Grid>
 
       {/* End of directions */}
-      <div>
+      <Grid>
         {/* <TextField
           id="filled-textarea"
           label="Ingredient List"
@@ -302,15 +342,24 @@ export default function RecipeForm(props) {
           // defaultValue="Default Value"
           variant="filled"
         /> */}
-      </div>
+      </Grid>
+      <Grid>
+  
 
+      
+    </Grid>
+    
       <Button
         variant="contained"
         onClick={handleSubmit}
+        
         sx={{ width: 200, padding: 1, margin: 2 }}
+
+
       >
         Submit Your Recipe
       </Button>
+      
 
       <Button
         component={Link}
@@ -320,6 +369,7 @@ export default function RecipeForm(props) {
       >
         View Recipe Feed{" "}
       </Button>
+      
 
       {/* <Button
         component={Link}
@@ -329,6 +379,12 @@ export default function RecipeForm(props) {
       >
         Check Out A Recipe{" "}
       </Button> */}
+       <Grid>
+
+
+      
+    </Grid>
     </Box>
+    
   );
 }
