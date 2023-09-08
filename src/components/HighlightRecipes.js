@@ -36,13 +36,13 @@ function RecipeReviewCard({ recipe }) {
   };
 
   return (
-    <Grid container justifyContent={"center"}>
+    <Grid container sx={{}}>
       <ThemeProvider theme={darkTheme}>
-        <Card sx={{ maxWidth: 345 }}>
-          <CardHeader title={recipe.RecipeName} subheader={recipe.Date} />
+        <Card >
+          <CardHeader title={recipe.RecipeName} />
           <CardMedia
             component="img"
-            height="194"
+            sx={{ sm:{width: "250px", height:"250px"}, md:{width: "200px", height:"200px"}}}
             image={
               recipe.PhotoUrl ||
               "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
@@ -86,21 +86,22 @@ export default function HighlightRecipes() {
   }, [firebase]);
 
   return recipes.length ? (
-    <Grid container spacing={2} alignItems="center" justifyContent="center">
+    <Grid container   spacing={2} alignItems="center" justifyContent="center">
       {recipes.map((recipe) => {
         return (
-          <Grid item xs={12} lg={2}>
-            <RecipeReviewCard recipe={recipe} />
+          <Grid item lg={2} spacing={2}>
+            <RecipeReviewCard sx={{Height:"250px", Width:"250px"}} recipe={recipe} />
           </Grid>
         );
       })}
-      <Grid item xs={12} lg={2} spacing={1}>
+      <Grid container spacing={1} margin={1}>
         <Grid container justifyContent={"center"}>
           <Button
             component={Link}
             to="/recipeFeed"
-            variant="contained"
-            xs={{ width: 200, padding: 1, margin: 2 }}
+            variant="outlined"
+            sx={{ color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
+              border:"1px solid #3CA6A6"}, width: 200, padding: 1, margin: 2 }}
           >
             View Recipe Feed{" "}
           </Button>

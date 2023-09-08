@@ -120,10 +120,10 @@ function ImageUploadCard(props) {
 
   function renderInitialState() {
     return (
-      <React.Fragment>
-        <Grid container justify="center" alignItems="center">
+      <React.Fragment sx={{bgcolor:"transparent"}}>
+        <Grid container sx={{bgcolor:"transparent"}} justify="center" alignItems="center">
           <input
-            style={{ display: "none" }}
+            style={{ display: "none", bgcolor:"transparent" }}
             accept="image/*"
             id="contained-button-file"
             multiple
@@ -132,7 +132,7 @@ function ImageUploadCard(props) {
           />
           <label htmlFor="contained-button-file">
             <Fab component="span">
-              <AddPhotoAlternateIcon />
+              <AddPhotoAlternateIcon sx={{color:"#282c34"}}/>
             </Fab>
           </label>
         </Grid>
@@ -143,7 +143,7 @@ function ImageUploadCard(props) {
   function renderUploadedState() {
     return (
       <React.Fragment>
-        <CardActionArea onClick={imageResetHandler}>
+        <CardActionArea sx={{bgcolor:"transparent", marginTop:"10px"}} onClick={imageResetHandler}>
           <img width="20%" src={selectedFile} />
         </CardActionArea>
       </React.Fragment>
@@ -159,7 +159,7 @@ function ImageUploadCard(props) {
   return (
     <React.Fragment>
       <div>
-        <Card>
+        <Card sx={{bgcolor:"transparent", backgroundImage:"unset"}}>
           {(mainState == "initial" && renderInitialState()) ||
             (mainState == "uploaded" && renderUploadedState())}
         </Card>

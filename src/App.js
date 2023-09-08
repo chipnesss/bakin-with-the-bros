@@ -11,15 +11,19 @@ function App() {
     <div className="App">
       <div className="App-header">
         <Header />
-        <SearchAppBar></SearchAppBar>
+        <Grid container sx={{width:"90%"}}>
+        <SearchAppBar sx={{width:"100%"}}></SearchAppBar>
+        
         <Grid
           sx={{
-            bgcolor: "rgba(255, 255, 255, 0.15)",
-            margin: "auto",
+            bgcolor: "rgba(255, 255, 255, 0.05)",
+            marginTop: "25px",
+            padding:"25px",
             borderRadius: "5px 5px 5px 5px",
           }}
         >
-          <HighlightRecipes></HighlightRecipes>
+          <HighlightRecipes sx={{width:"100%"}}></HighlightRecipes>
+        </Grid>
         </Grid>
       </div>
     </div>

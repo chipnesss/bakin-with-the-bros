@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-import MenuPopupState from "./MenuPopupState";
+// import MenuPopupState from "./MenuPopupState";
 
 const darkTheme = createTheme({
   palette: {
@@ -94,30 +94,33 @@ export default function SearchAppBar() {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-        <Box sx={{ width: "90%" }}>
+        <Box sx={{ width: "100%" }}>
           <AppBar position="static">
             <Toolbar>
               <Button
                 component={Link}
                 to="/"
-                variant="contained"
-                sx={{ width: 200, padding: 1, margin: 2 }}
+                variant="outlined"
+                sx={{ color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
+                  border:"1px solid #3CA6A6"}, width: 200, padding: 1, margin: 2 }}
               >
                 Home{" "}
               </Button>
               <Button
                 component={Link}
                 to="/recipeCreation"
-                variant="contained"
-                sx={{ width: 200, padding: 1, margin: 2 }}
+                variant="outlined"
+                sx={{ color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
+                  border:"1px solid #3CA6A6"}, width: 200, padding: 1, margin: 2 }}
               >
                 Create A Recipe{" "}
               </Button>
               <Button
                 component={Link}
                 to="/recipeFeed"
-                variant="contained"
-                sx={{ width: 200, padding: 1, margin: 2 }}
+                variant="outlined"
+                sx={{ color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
+                  border:"1px solid #3CA6A6"}, width: 200, padding: 1, margin: 2 }}
               >
                 View Recipe Feed{" "}
               </Button>
@@ -140,7 +143,7 @@ export default function SearchAppBar() {
               >
                 {" "}
               </Typography>
-              <Search>
+              <Search >
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>

@@ -54,9 +54,9 @@ function RecipeReviewCard({ recipe }) {
   };
 
   return (
-    // <Grid container spacing={"2"}>
-    <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
+    <Grid container spacing={"2"}>
+    <Card>
+      <CardHeader 
         // avatar={
         //   <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
         //     {}
@@ -70,14 +70,15 @@ function RecipeReviewCard({ recipe }) {
         title={recipe.RecipeName}
         // subheader={recipe.Date}
       />
-      <CardMedia
+      <CardMedia item
+      
         component="img"
-        height={250}
+        sx={{height:"250px"}}
         image={
           recipe.PhotoUrl ||
           "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB%20PanCham-01.png?alt=media&token=935d360e-9c5d-4f2e-92a6-49be1f0101fd"
         }
-        alt="Paella dish"
+        alt="Recipe Photos"
         onClick={handleRecipeClick}
       />
       <CardContent>
@@ -130,7 +131,7 @@ function RecipeReviewCard({ recipe }) {
         </CardContent>
       </Collapse>
     </Card>
-    // </Grid>
+   </Grid>
   );
 }
 
@@ -186,6 +187,7 @@ export default function RecipeFeed() {
             alignItems="center"
             justifyContent="center"
             margin={"15px"}
+            
           >
             <RecipeReviewCard recipe={recipe} />
           </Grid>

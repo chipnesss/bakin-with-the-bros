@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import SearchAppBar from "./NavBar";
 import RecipeFeed from "./RecipeFeed";
 import Header from "./Header";
+import { Grid } from "@mui/material";
 
 const darkTheme = createTheme({
   palette: {
@@ -30,15 +31,16 @@ const darkTheme = createTheme({
 
 function RecipeFeedView() {
   return (
-    <div className="App">
-      <div className="App-header">
+
         <ThemeProvider theme={darkTheme}>
           <Header></Header>
-          <SearchAppBar></SearchAppBar>
+          <Grid>
+          <SearchAppBar ></SearchAppBar>
+          </Grid>
           <RecipeFeed></RecipeFeed>
         </ThemeProvider>
-      </div>
-    </div>
+     
+
   );
 }
 

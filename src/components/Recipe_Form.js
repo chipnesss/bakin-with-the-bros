@@ -17,6 +17,8 @@ import Alert from "@mui/material/Alert";
 import ActionAlerts from "./Alerts";
 import { useState } from "react";
 import { Grid } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import { BorderAllRounded } from "@mui/icons-material";
 
 export default function RecipeForm(props) {
   const [value, setValue] = React.useState({
@@ -185,6 +187,11 @@ export default function RecipeForm(props) {
     setSuccessMessage(get_success_message());
     setShowAlert(true);
 
+    setDirectionsState("")
+    setIngredientsState("")
+    setEditorState("")
+    value.RecipeName = ""
+    value.PhotoUrl = ""
     localStorage.removeItem("RecipeName");
     localStorage.removeItem("PhotoUrl");
     localStorage.removeItem("directionsState");
@@ -204,7 +211,7 @@ export default function RecipeForm(props) {
       noValidate
       autoComplete="off"
     >
-      <Grid
+      <Grid container
         style={{
           display: "flex",
           flexDirection: "row",
@@ -214,14 +221,14 @@ export default function RecipeForm(props) {
       >
         <SearchAppBar></SearchAppBar>
       </Grid>
+      <Grid container sx={{ alignItems:"flex-start", justifyContent:"left", marginTop:"20px"}}>
       <h2>Recipe</h2>
-      <Grid
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          maxWidth: "50%",
+     <Grid container sx={{
+           justifyContent:"left", alignItems:"flex-start", flexDirection:"row"
+        }}>
+        <Grid item
+        sx={{
+           flexDirection:"row", justifyContent:"left", alignItems:"flex-start"
         }}
       >
         <TextField
@@ -231,19 +238,27 @@ export default function RecipeForm(props) {
           value={value.RecipeName}
           onChange={(e) => handleChange(e, "RecipeName")}
           variant="filled"
-          style={{ justifyContent: "center", width: "70%" }}
+          style={{ display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        margin:"0px"}}
         />
-
-        <Image_Upload
+      </Grid>
+      <Grid item sx={{width:"auto", flexDirection:"row", justifyContent:"left", alignItems:"flex-start"}}><Image_Upload
           mainState={value.PhotoUrl ? "uploaded" : null}
           imageUploaded={value.PhotoUrl ? 1 : null}
           selectedFile={value.PhotoUrl || null}
           onValueChange={handleChangeImg}
-        />
-      </Grid>
-      <Grid margin="auto">
-        <Grid sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
-          <h2>Ingredients</h2>
+          
+        /></Grid>
+        </Grid>
+      
+      
+      <Grid container sx={{flexDirection:"column", alignItems:"flex-start", justifyContent:"left", marginTop:"20px"}}>
+      <h2 >Ingredients</h2>
+        <Grid item sx={{width: "100%", justifyContent:"left", alignContent:"flex-start"}}>
+          
           <Editor
             toolbar={{
               options: ["inline", "list"],
@@ -275,11 +290,13 @@ export default function RecipeForm(props) {
             }}
           />
         </Grid>
-
+</Grid>
+</Grid>
         {/* Start of directions */}
-        <Grid margin="auto">
-          <Grid sx={{ maxWidth: "100%", margin: "auto", width: "90%" }}>
-            <h2>Directions</h2>
+        <Grid container sx={{ flexDirection:"column", alignItems:"flex-start", justifyContent:"left", marginTop:"20px"}}>
+        <h2>Directions</h2>
+          <Grid item sx={{width:"100%", justifyContent:"left", alignContent:"flex-start"}}>
+            
             <Editor
               toolbar={{
                 options: ["inline", "list"],
@@ -334,79 +351,37 @@ export default function RecipeForm(props) {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-
-      {/* End of directions */}
+      
       <Grid>
-        {/* <TextField
-          id="filled-textarea"
-          label="Ingredient List"
-          placeholder="Enter your ingredients here
-          - Item 1
-          - Item 2
-          - Item 3"
-          multiline
-          rows={15}
-          value={value.IngredientList}
-          onChange={(e) => handleChange(e, "IngredientList")}
-          variant="filled"
-        /> */}
-        {/* <TextField
-          id="filled-multiline-static"
-          label="Directions"
-          placeholder="Add your instructions
-          - Step 1
-          - Step 2
-          - Step 3"
-          multiline
-          rows={15}
-          value={value.Directions}
-          onChange={(e) => handleChange(e, "Directions")}
-          // defaultValue="Default Value"
-          variant="filled"
-        /> */}
-        {/* <TextField
-          id="filled-multiline-static"
-          label="Pro Tips"
-          placeholder="List a step and a potential challenge with the recipe
-          Example: 
-          - Step 3: Make sure that the dough has doubled in size. This is more important than the time spent rising."
-          multiline
-          rows={15}
-          value={value.ProTips}
-          onChange={(e) => handleChange(e, "ProTips")}
-          // defaultValue="Default Value"
-          variant="filled"
-        /> */}
       </Grid>
       <Grid></Grid>
-
+<Grid container sx={{alignItems:"center", justifyContent:"center", marginTop:"20px"}}>
+  <Grid item sx={{flexDirection:"row", justifyContent:"center", alignItems:"flex-start"}}>
       <Button
         variant="contained"
+        endIcon={<SendIcon sx={{color:"#282c34"}}/>}
         onClick={handleSubmit}
-        sx={{ width: 200, padding: 1, margin: 2 }}
+        sx={{ width: 200, padding: 1, margin: 2, bgcolor:"#78E2D6", color:"#282c34", '&:hover': {
+          backgroundColor: '#3CA6A6', color:"white"}}}
       >
-        Submit Your Recipe
+        Submit
       </Button>
 
       <Button
         component={Link}
         to="/recipeFeed"
         variant="outlined"
-        sx={{ width: 200, padding: 1, margin: 2 }}
+        sx={{ width: 200, padding: 1, margin: 2,  color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
+          border:"1px solid #3CA6A6"} }}
       >
-        View Recipe Feed{" "}
+      Recipe Feed{" "}
       </Button>
+      </Grid>
+      </Grid>
 
-      {/* <Button
-        component={Link}
-        to="/recipe"
-        variant="contained"
-        sx={{ width: 200, padding: 1, margin: 2 }}
-      >
-        Check Out A Recipe{" "}
-      </Button> */}
-      <Grid></Grid>
+
+      
     </Box>
+    
   );
 }
