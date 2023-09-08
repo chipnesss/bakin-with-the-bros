@@ -31,15 +31,18 @@ const darkTheme = createTheme({
 
 function RecipeFeedView() {
   return (
-
+    <div className="App">
+      <div className="App-header">
         <ThemeProvider theme={darkTheme}>
           <Header></Header>
-          <Grid>
+        
           <SearchAppBar ></SearchAppBar>
-          </Grid>
+          
           <RecipeFeed></RecipeFeed>
         </ThemeProvider>
-     
+     </div>
+     </div>
+
 
   );
 }
