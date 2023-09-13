@@ -6,11 +6,8 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 // import { ReceiptLongOutlined } from "@mui/icons-material";
@@ -18,10 +15,7 @@ import { getDatabase, ref, child, get } from "firebase/database";
 import { useFirebase } from "../FirebaseProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
-import SearchAppBar from "./NavBar";
 import { Grid } from "@mui/material";
-import draftToHtml from "draftjs-to-html";
-import { convertToRaw } from "draft-js";
 
 const darkTheme = createTheme({
   palette: {
@@ -55,83 +49,85 @@ function RecipeReviewCard({ recipe }) {
 
   return (
     <Grid container spacing={"2"}>
-    <Card>
-      <CardHeader 
-        // avatar={
-        //   <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
-        //     {}
-        //   </Avatar>
-        // }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={recipe.RecipeName}
-        // subheader={recipe.Date}
-      />
-      <CardMedia item
-      
-        component="img"
-        sx={{height:"250px"}}
-        image={
-          recipe.PhotoUrl ||
-          "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB%20PanCham-01.png?alt=media&token=935d360e-9c5d-4f2e-92a6-49be1f0101fd"
-        }
-        alt="Recipe Photos"
-        onClick={handleRecipeClick}
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {""}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Typography variant="body2" color="text.secondary">
-          Ingredients List
-        </Typography>
-        {/* <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton> */}
-        {/* <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton> */}
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-          // theme= darkTheme
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Card>
+        <CardHeader
+          // avatar={
+          //   <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
+          //     {}
+          //   </Avatar>
+          // }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={recipe.RecipeName}
+          // subheader={recipe.Date}
+        />
+        <CardMedia
+          item
+          component="img"
+          sx={{ height: "250px" }}
+          image={
+            recipe.PhotoUrl ||
+            "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB%20PanCham-01.png?alt=media&token=935d360e-9c5d-4f2e-92a6-49be1f0101fd"
+          }
+          alt="Recipe Photos"
+          onClick={handleRecipeClick}
+        />
         <CardContent>
-          <Typography paragraph>
-            <h3>Ingredients</h3>
-          </Typography>
-          <Typography paragraph>
-            <div
-              dangerouslySetInnerHTML={{
-                __html:
-                  recipe && recipe.IngredientList ? recipe.IngredientList : "",
-              }}
-            />
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-              // theme= darkTheme
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
+          <Typography variant="body2" color="text.secondary">
+            {""}
           </Typography>
         </CardContent>
-      </Collapse>
-    </Card>
-   </Grid>
+        <CardActions disableSpacing>
+          <Typography variant="body2" color="text.secondary">
+            Ingredients List
+          </Typography>
+          {/* <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton> */}
+          {/* <IconButton aria-label="share">
+          <ShareIcon />
+        </IconButton> */}
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+            // theme= darkTheme
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>
+              <h3>Ingredients</h3>
+            </Typography>
+            <Typography paragraph>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    recipe && recipe.IngredientList
+                      ? recipe.IngredientList
+                      : "",
+                }}
+              />
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+                // theme= darkTheme
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
+    </Grid>
   );
 }
 
@@ -187,7 +183,6 @@ export default function RecipeFeed() {
             alignItems="center"
             justifyContent="center"
             margin={"15px"}
-            
           >
             <RecipeReviewCard recipe={recipe} />
           </Grid>

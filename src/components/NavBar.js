@@ -13,6 +13,9 @@ import Header from "./Header";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 // import MenuPopupState from "./MenuPopupState";
+import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
+import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import HomeIcon from "@mui/icons-material/Home";
 
 const darkTheme = createTheme({
   palette: {
@@ -101,8 +104,17 @@ export default function SearchAppBar() {
                 component={Link}
                 to="/"
                 variant="outlined"
-                sx={{ color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
-                  border:"1px solid #3CA6A6"}, width: 200, padding: 1, margin: 2 }}
+                // endIcon={<HomeIcon sx={{ color: "#ffffff" }} />}
+                sx={{
+                  color: "#FFFFFF",
+                  border: "1px solid #FFFFFF",
+                  "&:hover": {
+                    border: "1px solid #3CA6A6",
+                  },
+                  width: 200,
+                  padding: 1,
+                  margin: 2,
+                }}
               >
                 Home{" "}
               </Button>
@@ -110,19 +122,37 @@ export default function SearchAppBar() {
                 component={Link}
                 to="/recipeCreation"
                 variant="outlined"
-                sx={{ color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
-                  border:"1px solid #3CA6A6"}, width: 200, padding: 1, margin: 2 }}
+                // endIcon={<AddToPhotosIcon sx={{ color: "#ffffff" }} />}
+                sx={{
+                  color: "#FFFFFF",
+                  border: "1px solid #FFFFFF",
+                  "&:hover": {
+                    border: "1px solid #3CA6A6",
+                  },
+                  width: 200,
+                  padding: 1,
+                  margin: 2,
+                }}
               >
-                Create A Recipe{" "}
+                Recipe
               </Button>
               <Button
                 component={Link}
                 to="/recipeFeed"
                 variant="outlined"
-                sx={{ color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
-                  border:"1px solid #3CA6A6"}, width: 200, padding: 1, margin: 2 }}
+                // endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
+                sx={{
+                  color: "#FFFFFF",
+                  border: "1px solid #FFFFFF",
+                  "&:hover": {
+                    border: "1px solid #3CA6A6",
+                  },
+                  width: 200,
+                  padding: 1,
+                  margin: 2,
+                }}
               >
-                View Recipe Feed{" "}
+                Recipe Feed
               </Button>
               {/* <MenuPopupState></MenuPopupState> */}
               {/* <IconButton
@@ -143,7 +173,7 @@ export default function SearchAppBar() {
               >
                 {" "}
               </Typography>
-              <Search >
+              <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>

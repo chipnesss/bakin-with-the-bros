@@ -35,15 +35,14 @@ function RecipeFeedView() {
       <div className="App-header">
         <ThemeProvider theme={darkTheme}>
           <Header></Header>
-        
-          <SearchAppBar ></SearchAppBar>
-          
+          <Grid sx={{ width: "90%" }}>
+            <SearchAppBar></SearchAppBar>
+          </Grid>
+
           <RecipeFeed></RecipeFeed>
         </ThemeProvider>
-     </div>
-     </div>
-
-
+      </div>
+    </div>
   );
 }
 

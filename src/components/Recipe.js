@@ -12,6 +12,7 @@ import { useParams, Link } from "react-router-dom";
 import SearchAppBar from "./NavBar";
 import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
+import { AlignHorizontalCenter } from "@mui/icons-material";
 
 const darkTheme = createTheme({
   palette: {
@@ -47,45 +48,43 @@ export default function Recipe({}) {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-        <SearchAppBar></SearchAppBar>
         <Container>
           <CssBaseline />
           <Header />
+          <SearchAppBar></SearchAppBar>
           <Box
             sx={{
-              margin: "25px",
-              padding: "25px",
               background: "rgba(255, 255, 255, 0.10)",
-              width: "90%",
+              width: "100%",
               borderRadius: ".5%",
               display: "flex",
+              padding: "5%",
+              marginTop: "25px",
             }}
           >
-            <Box sx={{ textAlign: "left", color: "white" }}>
-              {/* <Avatar
-              alt="Remy Sharp"
-              src="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FChip%20Hubbard%20-%20HCA%20Headshot%20-.jpg?alt=media&token=1e32f0d3-3438-4c11-ad49-e75344f13760"
-            /> */}
-              <Box sx={{ textAlign: "left", color: "white" }}>
-                <p>{recipe.Date}</p>
-              </Box>
-            </Box>
-            <Box sx={{ textAlign: "center", color: "white" }}>
+            <Box
+              sx={{
+                maxWidth: "100%",
+                width: "100%",
+                color: "white",
+              }}
+            >
               <Box>
                 <Box sx={{ textAlign: "left", color: "white" }}>
                   <Box>
                     <h2>{recipe.RecipeName}</h2>
+                    <p>{recipe.Date}</p>
                   </Box>
                   <Box
                     component="img"
                     sx={{
-                      margin: "5px",
+                      margin: "5px auto",
                       background: "rgba(255, 255, 255, 0.10)",
                       borderRadius: ".5%",
                       // height: 233,
                       // width: 350,
                       maxHeight: { xs: 233, md: 167, lg: 400 },
-                      maxWidth: { xs: 350, md: 250, lg: 400 },
+                      maxWidth: "100%",
                     }}
                     alt="Looks delicous."
                     src={

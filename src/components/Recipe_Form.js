@@ -17,7 +17,7 @@ import Alert from "@mui/material/Alert";
 import ActionAlerts from "./Alerts";
 import { useState } from "react";
 import { Grid } from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
 import { BorderAllRounded } from "@mui/icons-material";
 
 export default function RecipeForm(props) {
@@ -148,7 +148,7 @@ export default function RecipeForm(props) {
   //  recipeList.sort(() => 0.5 - Math.random());
 
   // }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     let messageContentHTML = null;
     let directvar = null;
 
@@ -159,43 +159,55 @@ export default function RecipeForm(props) {
       setShowError(true);
       return;
     }
+    // Add Else:
 
     if (ingredientsState && ingredientsState.getCurrentContent()) {
       messageContentHTML = draftToHtml(
         convertToRaw(ingredientsState.getCurrentContent())
       );
     }
+    // Add Else:
     if (directionsState && directionsState.getCurrentContent()) {
       directvar = draftToHtml(
         convertToRaw(directionsState.getCurrentContent())
       );
     }
-    // console.log(messageContentHTML);
-    // Needs to get the photo URL
+    // Add Else:
+
     const auth = getAuth();
     const user = auth.currentUser;
     e.preventDefault();
     const postListRef = ref(database, "recipes");
-    const newPostRef = push(postListRef);
-    set(newPostRef, {
-      ...value,
-      IngredientList: messageContentHTML,
-      Directions: directvar,
-      userId: user.uid,
-    });
 
-    setSuccessMessage(get_success_message());
-    setShowAlert(true);
+    try {
+      const newPostRef = await push(postListRef);
+      await set(newPostRef, {
+        ...value,
+        IngredientList: messageContentHTML,
+        Directions: directvar,
+        userId: user.uid,
+      });
 
-    setDirectionsState("")
-    setIngredientsState("")
-    setEditorState("")
-    value.RecipeName = ""
-    value.PhotoUrl = ""
-    localStorage.removeItem("RecipeName");
-    localStorage.removeItem("PhotoUrl");
-    localStorage.removeItem("directionsState");
-    localStorage.removeItem("ingredientsState");
+      setSuccessMessage(get_success_message());
+      setShowAlert(true);
+
+      setDirectionsState("");
+      setIngredientsState("");
+      setEditorState("");
+
+      setValue({
+        ...value,
+        RecipeName: "",
+        PhotoUrl: "",
+      });
+
+      localStorage.removeItem("RecipeName");
+      localStorage.removeItem("PhotoUrl");
+      localStorage.removeItem("directionsState");
+      localStorage.removeItem("ingredientsState");
+    } catch {
+      setShowError(true);
+    }
   };
 
   return (
@@ -211,7 +223,8 @@ export default function RecipeForm(props) {
       noValidate
       autoComplete="off"
     >
-      <Grid container
+      <Grid
+        container
         style={{
           display: "flex",
           flexDirection: "row",
@@ -221,82 +234,83 @@ export default function RecipeForm(props) {
       >
         <SearchAppBar></SearchAppBar>
       </Grid>
-      <Grid container sx={{ alignItems:"flex-start", justifyContent:"left", marginTop:"20px"}}>
-      <h2>Recipe</h2>
-     <Grid container sx={{
-           justifyContent:"left", alignItems:"flex-start", flexDirection:"row"
-        }}>
-        <Grid item
+      <Grid
+        container
         sx={{
-           flexDirection:"row", justifyContent:"left", alignItems:"flex-start"
+          alignItems: "flex-start",
+          justifyContent: "left",
+          marginTop: "20px",
         }}
       >
-        <TextField
-          id="filled-multiline-flexible"
-          label="Recipe Name"
-          placeholder="Enter Recipe Name Here"
-          value={value.RecipeName}
-          onChange={(e) => handleChange(e, "RecipeName")}
-          variant="filled"
-          style={{ display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        margin:"0px"}}
-        />
-      </Grid>
-      <Grid item sx={{width:"auto", flexDirection:"row", justifyContent:"left", alignItems:"flex-start"}}><Image_Upload
-          mainState={value.PhotoUrl ? "uploaded" : null}
-          imageUploaded={value.PhotoUrl ? 1 : null}
-          selectedFile={value.PhotoUrl || null}
-          onValueChange={handleChangeImg}
-          
-        /></Grid>
+        <h2>Recipe</h2>
+        <Grid
+          container
+          sx={{
+            justifyContent: "left",
+            alignItems: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <Grid
+            item
+            sx={{
+              flexDirection: "row",
+              justifyContent: "left",
+              alignItems: "flex-start",
+            }}
+          >
+            <TextField
+              id="filled-multiline-flexible"
+              label="Recipe Name"
+              placeholder="Enter Recipe Name Here"
+              value={value.RecipeName}
+              onChange={(e) => handleChange(e, "RecipeName")}
+              variant="filled"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                margin: "0px",
+              }}
+            />
+          </Grid>
+          <Grid
+            item
+            sx={{
+              width: "auto",
+              flexDirection: "row",
+              justifyContent: "left",
+              alignItems: "flex-start",
+            }}
+          >
+            <Image_Upload
+              mainState={value.PhotoUrl ? "uploaded" : null}
+              imageUploaded={value.PhotoUrl ? 1 : null}
+              selectedFile={value.PhotoUrl || null}
+              onValueChange={handleChangeImg}
+            />
+          </Grid>
         </Grid>
-      
-      
-      <Grid container sx={{flexDirection:"column", alignItems:"flex-start", justifyContent:"left", marginTop:"20px"}}>
-      <h2 >Ingredients</h2>
-        <Grid item sx={{width: "100%", justifyContent:"left", alignContent:"flex-start"}}>
-          
-          <Editor
-            toolbar={{
-              options: ["inline", "list"],
-              list: {
-                inDropdown: false,
-                className: undefined,
-                component: undefined,
-                dropdownClassName: undefined,
-                options: ["unordered", "ordered"],
-              },
 
-              inline: {
-                inDropdown: false,
-                className: undefined,
-                component: undefined,
-                dropdownClassName: undefined,
-                options: ["bold", "underline"],
-              },
+        <Grid
+          container
+          sx={{
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "left",
+            marginTop: "20px",
+          }}
+        >
+          <h2>Ingredients</h2>
+          <Grid
+            item
+            sx={{
+              width: "100%",
+              justifyContent: "left",
+              alignContent: "flex-start",
             }}
-            editorState={ingredientsState}
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
-            onEditorStateChange={(e) => {
-              setIngredientsState && setIngredientsState(e);
-              localStorage.setItem(
-                "ingredientsState",
-                draftToHtml(convertToRaw(e.getCurrentContent()))
-              );
-            }}
-          />
-        </Grid>
-</Grid>
-</Grid>
-        {/* Start of directions */}
-        <Grid container sx={{ flexDirection:"column", alignItems:"flex-start", justifyContent:"left", marginTop:"20px"}}>
-        <h2>Directions</h2>
-          <Grid item sx={{width:"100%", justifyContent:"left", alignContent:"flex-start"}}>
-            
+          >
             <Editor
               toolbar={{
                 options: ["inline", "list"],
@@ -316,72 +330,150 @@ export default function RecipeForm(props) {
                   options: ["bold", "underline"],
                 },
               }}
-              editorState={directionsState}
+              editorState={ingredientsState}
               wrapperClassName="demo-wrapper"
               editorClassName="demo-editor"
               onEditorStateChange={(e) => {
-                setDirectionsState && setDirectionsState(e);
+                setIngredientsState && setIngredientsState(e);
                 localStorage.setItem(
-                  "directionsState",
+                  "ingredientsState",
                   draftToHtml(convertToRaw(e.getCurrentContent()))
                 );
               }}
             />
-            <Grid>
-              {showError && (
-                <Alert
-                  severity="error"
-                  sx={{ margin: "auto", width: "auto" }}
-                  onClose={handleCloseError}
-                >
-                  Make sure your recipe is completely filled out!
-                </Alert>
-              )}
-            </Grid>
-            <Grid>
-              {showAlert && (
-                <Alert
-                  severity="success"
-                  sx={{ margin: "auto", width: "auto" }}
-                  onClose={handleCloseAlert}
-                >
-                  {successMessage}
-                </Alert>
-              )}
-            </Grid>
           </Grid>
         </Grid>
-      
-      <Grid>
       </Grid>
+      {/* Start of directions */}
+      <Grid
+        container
+        sx={{
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "left",
+          marginTop: "20px",
+        }}
+      >
+        <h2>Directions</h2>
+        <Grid
+          item
+          sx={{
+            width: "100%",
+            justifyContent: "left",
+            alignContent: "flex-start",
+          }}
+        >
+          <Editor
+            toolbar={{
+              options: ["inline", "list"],
+              list: {
+                inDropdown: false,
+                className: undefined,
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ["unordered", "ordered"],
+              },
+
+              inline: {
+                inDropdown: false,
+                className: undefined,
+                component: undefined,
+                dropdownClassName: undefined,
+                options: ["bold", "underline"],
+              },
+            }}
+            editorState={directionsState}
+            wrapperClassName="demo-wrapper"
+            editorClassName="demo-editor"
+            onEditorStateChange={(e) => {
+              setDirectionsState && setDirectionsState(e);
+              localStorage.setItem(
+                "directionsState",
+                draftToHtml(convertToRaw(e.getCurrentContent()))
+              );
+            }}
+          />
+          <Grid>
+            {showError && (
+              <Alert
+                severity="error"
+                sx={{ margin: "auto", width: "auto" }}
+                onClose={handleCloseError}
+              >
+                Make sure your recipe is completely filled out!
+              </Alert>
+            )}
+          </Grid>
+          <Grid>
+            {showAlert && (
+              <Alert
+                severity="success"
+                sx={{ margin: "auto", width: "auto" }}
+                onClose={handleCloseAlert}
+              >
+                {successMessage}
+              </Alert>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+
       <Grid></Grid>
-<Grid container sx={{alignItems:"center", justifyContent:"center", marginTop:"20px"}}>
-  <Grid item sx={{flexDirection:"row", justifyContent:"center", alignItems:"flex-start"}}>
-      <Button
-        variant="contained"
-        endIcon={<SendIcon sx={{color:"#282c34"}}/>}
-        onClick={handleSubmit}
-        sx={{ width: 200, padding: 1, margin: 2, bgcolor:"#78E2D6", color:"#282c34", '&:hover': {
-          backgroundColor: '#3CA6A6', color:"white"}}}
+      <Grid></Grid>
+      <Grid
+        container
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "20px",
+        }}
       >
-        Submit
-      </Button>
+        <Grid
+          item
+          sx={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+        >
+          <Button
+            variant="contained"
+            endIcon={<SendIcon sx={{ color: "#282c34" }} />}
+            onClick={handleSubmit}
+            sx={{
+              width: 200,
+              padding: 1,
+              margin: 2,
+              bgcolor: "#78E2D6",
+              color: "#282c34",
+              "&:hover": {
+                backgroundColor: "#3CA6A6",
+                color: "white",
+              },
+            }}
+          >
+            Submit
+          </Button>
 
-      <Button
-        component={Link}
-        to="/recipeFeed"
-        variant="outlined"
-        sx={{ width: 200, padding: 1, margin: 2,  color:"#FFFFFF", border:"1px solid #FFFFFF", '&:hover': {
-          border:"1px solid #3CA6A6"} }}
-      >
-      Recipe Feed{" "}
-      </Button>
+          <Button
+            component={Link}
+            to="/recipeFeed"
+            variant="outlined"
+            sx={{
+              width: 200,
+              padding: 1,
+              margin: 2,
+              color: "#FFFFFF",
+              border: "1px solid #FFFFFF",
+              "&:hover": {
+                border: "1px solid #3CA6A6",
+              },
+            }}
+          >
+            Recipe Feed{" "}
+          </Button>
+        </Grid>
       </Grid>
-      </Grid>
-
-
-      
     </Box>
-    
   );
 }

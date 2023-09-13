@@ -1,6 +1,7 @@
 import "../App.css";
 import Header from "./Header";
 import RecipeForm from "./Recipe_Form";
+import SearchAppBar from "./NavBar";
 
 function RecipeFormView() {
   return (
