@@ -60,6 +60,7 @@ export default function Recipe({}) {
               display: "flex",
               padding: "5%",
               marginTop: "25px",
+              marginBottom: "25px",
             }}
           >
             <Box
@@ -101,10 +102,19 @@ export default function Recipe({}) {
                     <Button
                       component={Link}
                       to="/recipeFeed"
-                      variant="contained"
-                      sx={{ width: 200, padding: 1, margin: 2 }}
+                      variant="outlined"
+                      sx={{
+                        color: "#FFFFFF",
+                        border: "1px solid #FFFFFF",
+                        "&:hover": {
+                          border: "1px solid #3CA6A6",
+                        },
+                        width: 200,
+                        padding: 1,
+                        margin: 2,
+                      }}
                     >
-                      View Recipe Feed{" "}
+                      More Recipes{" "}
                     </Button>
                   </Box>
 

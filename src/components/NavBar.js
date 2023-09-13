@@ -122,7 +122,7 @@ export default function SearchAppBar() {
                 component={Link}
                 to="/recipeCreation"
                 variant="outlined"
-                // endIcon={<AddToPhotosIcon sx={{ color: "#ffffff" }} />}
+                endIcon={<AddToPhotosIcon sx={{ color: "#ffffff" }} />}
                 sx={{
                   color: "#FFFFFF",
                   border: "1px solid #FFFFFF",
@@ -140,7 +140,7 @@ export default function SearchAppBar() {
                 component={Link}
                 to="/recipeFeed"
                 variant="outlined"
-                // endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
+                endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
                 sx={{
                   color: "#FFFFFF",
                   border: "1px solid #FFFFFF",
