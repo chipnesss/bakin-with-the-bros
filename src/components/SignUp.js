@@ -2,6 +2,8 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
+import { ref, set, push } from "firebase/database";
+import { useFirebase } from "../FirebaseProvider";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -57,6 +59,7 @@ const darkTheme = createTheme({
 
 export default function SignUp() {
   const history = useHistory();
+  const database = useFirebase();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -76,11 +79,16 @@ export default function SignUp() {
         // In memory persistence will be applied to the signed in Google user
         // even though the persistence was set to 'none' and a page redirect
         // occurred.
-        signInWithPopup(auth, provider).then(() => {
-          console.log("a string it doesnt really matter what it is");
-          history.push(searchParams.get("origin"));
-          console.log(searchParams.get("origin"));
-        });
+        signInWithPopup(auth, provider).then(
+          async ({ user: { photoURL, displayName, uid } }) => {
+            const userMetaRef = ref(database, `user_meta/${uid}`);
+
+            await set(userMetaRef, { photoURL, displayName });
+            console.log(photoURL, displayName, uid);
+            history.push(searchParams.get("origin"));
+            console.log(searchParams.get("origin"));
+          }
+        );
       })
       .catch((error) => {
         console.log(error);

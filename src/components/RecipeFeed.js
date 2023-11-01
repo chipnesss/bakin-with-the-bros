@@ -16,7 +16,8 @@ import { useFirebase } from "../FirebaseProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { Grid } from "@mui/material";
-
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -51,11 +52,7 @@ function RecipeReviewCard({ recipe }) {
     <Grid container spacing={"2"}>
       <Card>
         <CardHeader
-          // avatar={
-          //   <Avatar sx={{ bgcolor: "white" }} aria-label="recipe">
-          //     {}
-          //   </Avatar>
-          // }
+          // avatar={}
           action={
             <IconButton aria-label="settings">
               <MoreVertIcon />
@@ -76,9 +73,20 @@ function RecipeReviewCard({ recipe }) {
           onClick={handleRecipeClick}
         />
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {""}
-          </Typography>
+          <Box sx={{ display: "flex" }}>
+            <Avatar alt={recipe.userDisplayName} src={recipe.userPhoto} />
+            <Typography
+              sx={{
+                alignItems: "center",
+                paddingTop: "10px",
+                paddingLeft: "10px",
+              }}
+              variant="body2"
+              color="text.secondary"
+            >
+              {`Posted by: ${recipe.userDisplayName}`}
+            </Typography>
+          </Box>
         </CardContent>
         <CardActions disableSpacing>
           <Typography variant="body2" color="text.secondary">
@@ -145,7 +153,7 @@ export default function RecipeFeed() {
     if (firebase) {
       const database = getDatabase(firebase.app);
       const dbRef = ref(database);
-      get(child(dbRef, `recipes/`)).then((snapshot) => {
+      get(child(dbRef, `recipes/`)).then(async (snapshot) => {
         console.log(snapshot);
         if (snapshot.exists()) {
           const recipeList = Object.entries(snapshot.val()).map(([k, v]) => ({
@@ -155,8 +163,26 @@ export default function RecipeFeed() {
           const recipeListSorted = recipeList.sort((a, b) =>
             new Date(a.TimeStamp) < new Date(b.TimeStamp) ? 1 : -1
           );
-          setRecipes(recipeListSorted);
-          console.log(recipeListSorted);
+          const recipeListWithUsers = await Promise.all(
+            recipeListSorted.map(async (recipe) => {
+              const snapshot = await get(
+                child(dbRef, `user_meta/${recipe.userId}`)
+              );
+              console.log(snapshot);
+              if (snapshot.exists()) {
+                console.log(snapshot.val());
+                return {
+                  ...recipe,
+                  userPhoto: snapshot.val().photoURL,
+                  userDisplayName: snapshot.val().displayName,
+                };
+              }
+              return recipe;
+            })
+          );
+
+          setRecipes(recipeListWithUsers);
+          console.log(recipeListWithUsers);
         } else {
           console.log("No data available");
         }

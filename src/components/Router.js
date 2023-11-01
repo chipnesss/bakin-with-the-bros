@@ -88,7 +88,7 @@ const Router = () => {
           }}
         >
           <img
-            style={{ width: "15%", margin: "0 25%" }}
+            style={{ width: "15%", margin: "50%" }}
             src="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB-PanCham.gif?alt=media&token=f0aa8a14-721e-4241-9cc9-1124fb62f1f1"
           />
         </Box>
