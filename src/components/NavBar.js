@@ -185,9 +185,24 @@ export default function SearchAppBar() {
                 />
                 <Box>
                   {result.map((result, index) => (
-                    <Link key={index} to={`/recipe/${result.id}`}>
-                      {result.name}
-                    </Link>
+                    <Box
+                      sx={{
+                        fontFamily: "sans-serif",
+                        fontSize: "1.5em",
+                        padding: "3px",
+                      }}
+                    >
+                      <Link
+                        style={{
+                          color: "white",
+                          "text-decoration": "none",
+                        }}
+                        key={index}
+                        to={`/recipe/${result.id}`}
+                      >
+                        {result.name}
+                      </Link>
+                    </Box>
                   ))}
                 </Box>
               </Search>

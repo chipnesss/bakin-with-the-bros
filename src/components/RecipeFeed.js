@@ -152,8 +152,11 @@ export default function RecipeFeed() {
             RecipedId: k,
             ...v,
           }));
-          setRecipes(recipeList);
-          console.log(recipeList);
+          const recipeListSorted = recipeList.sort((a, b) =>
+            new Date(a.TimeStamp) < new Date(b.TimeStamp) ? 1 : -1
+          );
+          setRecipes(recipeListSorted);
+          console.log(recipeListSorted);
         } else {
           console.log("No data available");
         }

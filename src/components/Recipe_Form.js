@@ -185,6 +185,7 @@ export default function RecipeForm(props) {
         ...value,
         IngredientList: messageContentHTML,
         Directions: directvar,
+        TimeStamp: new Date().toLocaleString(),
         userId: user.uid,
       });
 
