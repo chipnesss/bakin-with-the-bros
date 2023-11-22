@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import App from "../App";
+import { Grid } from "@mui/material";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import RecipeView from "./RecipeView";
 import RecipeFeedView from "./RecipeFeedView";
@@ -76,22 +77,26 @@ const Router = () => {
     // Show loader
 
     // const auth = getAuth();
-
+//
     if (loading || !firebase) {
       return (
-        <Box
+        <Grid containter
           sx={{
             bgcolor: "#282c34",
             width: "100vw",
             height: "100vh",
             overflow: "hidden",
+            alignContent: "center",
+            justifyContent: "center"
           }}
         >
+          <Grid item sx={{width: "20%", margin: "10% 40%"}}>
           <img
-            style={{ width: "15%", margin: "50%" }}
+            style={{width: "100%"  }}
             src="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB-PanCham.gif?alt=media&token=f0aa8a14-721e-4241-9cc9-1124fb62f1f1"
           />
-        </Box>
+          </Grid>
+        </Grid>
       );
     }
     // console.log("console log" + user);
