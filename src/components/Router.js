@@ -3,6 +3,7 @@ import App from "../App";
 import { Grid } from "@mui/material";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import RecipeView from "./RecipeView";
+import MyRecipesView from "./MyRecipesView"
 import RecipeFeedView from "./RecipeFeedView";
 import RecipeForm from "./Recipe_Form";
 import RecipeFormView from "./RecipeFormView";
@@ -123,6 +124,8 @@ const Router = () => {
             {/* <Route exact path="/recipeFeed" component={RecipeFeed} /> */}
             <Route exact path="/recipeFeed" component={RecipeFeedView} />
             <Route path="/recipe/:RecipeId" component={RecipeView} />
+            <Route exact path="/myRecipes" component={MyRecipesView} />
+
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

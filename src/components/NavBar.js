@@ -154,6 +154,24 @@ export default function SearchAppBar() {
               >
                 Recipe Feed
               </Button>
+              <Button
+                component={Link}
+                to="/myRecipes"
+                variant="outlined"
+                endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
+                sx={{
+                  color: "#FFFFFF",
+                  border: "1px solid #FFFFFF",
+                  "&:hover": {
+                    border: "1px solid #3CA6A6",
+                  },
+                  width: 200,
+                  padding: 1,
+                  margin: 2,
+                }}
+              >
+                My Recipes (Beta)
+              </Button>
               {/* <MenuPopupState></MenuPopupState> */}
               {/* <IconButton
                 size="large"
