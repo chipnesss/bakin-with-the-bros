@@ -15,9 +15,12 @@ import { getDatabase, ref, child, get } from "firebase/database";
 import { useFirebase } from "../FirebaseProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Grid, Icon } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import EditIcon from '@mui/icons-material/Edit';
+import { Edit } from "@mui/icons-material";
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -55,7 +58,9 @@ function RecipeReviewCard({ recipe }) {
           // avatar={}
           action={
             <IconButton aria-label="settings">
-              <MoreVertIcon />
+              <EditIcon />
+              
+
             </IconButton>
           }
           title={recipe.RecipeName}
@@ -72,9 +77,11 @@ function RecipeReviewCard({ recipe }) {
           alt="Recipe Photos"
           onClick={handleRecipeClick}
         />
+      
         <CardContent>
           <Box sx={{ display: "flex" }}>
             <Avatar alt={recipe.userDisplayName} src={recipe.userPhoto} />
+            
             <Typography
               sx={{
                 alignItems: "center",
@@ -85,8 +92,15 @@ function RecipeReviewCard({ recipe }) {
               color="text.secondary"
             >
               {`Posted by: ${recipe.userDisplayName}`}
+              
+                
+              
             </Typography>
+         
+            
+          
           </Box>
+          
         </CardContent>
         <CardActions disableSpacing>
           <Typography variant="body2" color="text.secondary">

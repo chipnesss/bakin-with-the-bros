@@ -40,7 +40,7 @@ function MyRecipesView() {
             <SearchAppBar></SearchAppBar>
           </Grid>
 
-          <RecipeFeed></RecipeFeed>
+          <MyRecipes></MyRecipes>
         </ThemeProvider>
       </div>
     </div>

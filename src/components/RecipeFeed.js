@@ -55,7 +55,7 @@ function RecipeReviewCard({ recipe }) {
           // avatar={}
           action={
             <IconButton aria-label="settings">
-              <MoreVertIcon />
+              {/* <MoreVertIcon /> */}
             </IconButton>
           }
           title={recipe.RecipeName}
