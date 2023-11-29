@@ -3,7 +3,7 @@ import App from "../App";
 import { Grid } from "@mui/material";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import RecipeView from "./RecipeView";
-import MyRecipesView from "./MyRecipesView"
+import MyRecipesView from "./MyRecipesView";
 import RecipeFeedView from "./RecipeFeedView";
 import RecipeForm from "./Recipe_Form";
 import RecipeFormView from "./RecipeFormView";
@@ -78,24 +78,25 @@ const Router = () => {
     // Show loader
 
     // const auth = getAuth();
-//
+    //
     if (loading || !firebase) {
       return (
-        <Grid containter
+        <Grid
+          containter
           sx={{
             bgcolor: "#282c34",
             width: "100vw",
             height: "100vh",
             overflow: "hidden",
             alignContent: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
-          <Grid item sx={{width: "20%", margin: "10% 40%"}}>
-          <img
-            style={{width: "100%"  }}
-            src="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB-PanCham.gif?alt=media&token=f0aa8a14-721e-4241-9cc9-1124fb62f1f1"
-          />
+          <Grid item sx={{ width: "20%", margin: "10% 40%" }}>
+            <img
+              style={{ width: "100%" }}
+              src="https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2FBWTB-PanCham.gif?alt=media&token=f0aa8a14-721e-4241-9cc9-1124fb62f1f1"
+            />
           </Grid>
         </Grid>
       );
@@ -124,8 +125,8 @@ const Router = () => {
             {/* <Route exact path="/recipeFeed" component={RecipeFeed} /> */}
             <Route exact path="/recipeFeed" component={RecipeFeedView} />
             <Route path="/recipe/:RecipeId" component={RecipeView} />
-            <Route exact path="/myRecipes" component={MyRecipesView} />
-
+            <PrivateRoute exact path="/myRecipes" component={MyRecipesView} />
+            {/* <PrivateRoute path="/editRecipe/:RecipeId" component={EditRecipe} /> */}
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

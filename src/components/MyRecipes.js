@@ -18,8 +18,9 @@ import { useHistory } from "react-router-dom";
 import { Grid, Icon } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import { Edit } from "@mui/icons-material";
+import { getAuth } from "firebase/auth";
 
 const darkTheme = createTheme({
   palette: {
@@ -59,8 +60,6 @@ function RecipeReviewCard({ recipe }) {
           action={
             <IconButton aria-label="settings">
               <EditIcon />
-              
-
             </IconButton>
           }
           title={recipe.RecipeName}
@@ -77,11 +76,11 @@ function RecipeReviewCard({ recipe }) {
           alt="Recipe Photos"
           onClick={handleRecipeClick}
         />
-      
+
         <CardContent>
           <Box sx={{ display: "flex" }}>
             <Avatar alt={recipe.userDisplayName} src={recipe.userPhoto} />
-            
+
             <Typography
               sx={{
                 alignItems: "center",
@@ -92,15 +91,8 @@ function RecipeReviewCard({ recipe }) {
               color="text.secondary"
             >
               {`Posted by: ${recipe.userDisplayName}`}
-              
-                
-              
             </Typography>
-         
-            
-          
           </Box>
-          
         </CardContent>
         <CardActions disableSpacing>
           <Typography variant="body2" color="text.secondary">
@@ -165,6 +157,8 @@ export default function MyRecipes() {
 
   React.useEffect(() => {
     if (firebase) {
+      const auth = getAuth();
+      const user = auth.currentUser;
       const database = getDatabase(firebase.app);
       const dbRef = ref(database);
       get(child(dbRef, `recipes/`)).then(async (snapshot) => {
@@ -177,8 +171,11 @@ export default function MyRecipes() {
           const recipeListSorted = recipeList.sort((a, b) =>
             new Date(a.TimeStamp) < new Date(b.TimeStamp) ? 1 : -1
           );
+          const userRecipes = recipeListSorted.filter(
+            (x) => x.userId === user.uid
+          );
           const recipeListWithUsers = await Promise.all(
-            recipeListSorted.map(async (recipe) => {
+            userRecipes.map(async (recipe) => {
               const snapshot = await get(
                 child(dbRef, `user_meta/${recipe.userId}`)
               );
