@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { Box } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, set, push } from "firebase/database";
+import RecipeEditor from "./RecipeEditor";
 
 const darkTheme = createTheme({
   palette: {
@@ -126,7 +127,7 @@ const Router = () => {
             <Route exact path="/recipeFeed" component={RecipeFeedView} />
             <Route path="/recipe/:RecipeId" component={RecipeView} />
             <PrivateRoute exact path="/myRecipes" component={MyRecipesView} />
-            {/* <PrivateRoute path="/editRecipe/:RecipeId" component={EditRecipe} /> */}
+            <PrivateRoute path="/recipeEditor/:RecipeId" component={RecipeEditor} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

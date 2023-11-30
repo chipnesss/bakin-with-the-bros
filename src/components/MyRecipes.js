@@ -51,6 +51,9 @@ function RecipeReviewCard({ recipe }) {
   const handleRecipeClick = () => {
     history.push(`recipe/${recipe.RecipedId}`);
   };
+  const handleRecipeEditor = () => {
+    history.push(`recipeEditor/${recipe.RecipedId}`);
+  };
 
   return (
     <Grid container spacing={"2"}>
@@ -59,7 +62,7 @@ function RecipeReviewCard({ recipe }) {
           // avatar={}
           action={
             <IconButton aria-label="settings">
-              <EditIcon />
+              <EditIcon onClick={handleRecipeEditor}/>
             </IconButton>
           }
           title={recipe.RecipeName}

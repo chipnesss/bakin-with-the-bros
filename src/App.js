@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
-        <Header />
+        <Header sx={{}}/>
         <Grid container sx={{width:"90%"}}>
         <SearchAppBar sx={{width:"100%"}}></SearchAppBar>
         
