@@ -5,13 +5,13 @@ import SearchAppBar from "./NavBar";
 import RecipeEditor from "./RecipeEditor";
 
 function RecipeFormView() {
-  return (<>
+  return (
     <div className="App">
       <div className="App-header">
         <Header />
         <RecipeEditor />
       </div>
-    </div></>
+    </div>
   );
 }
 
