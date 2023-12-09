@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { getDatabase, ref, set, push } from "firebase/database";
+import { getDatabase, ref, set, push, get, child } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useFirebase } from "../FirebaseProvider";
 import { Link } from "react-router-dom";
@@ -19,17 +19,56 @@ import { useState } from "react";
 import { Grid } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { BorderAllRounded } from "@mui/icons-material";
+import Recipes from "./Header";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function RecipeEditor(props) {
+  let { RecipeId } = useParams();
+  console.log(RecipeId);
   const [value, setValue] = React.useState({
-    RecipeName: localStorage.getItem("RecipeName") || "",
+    RecipeName: "",
     IngredientList: "",
     Directions: "",
     ProTips: "",
     Date: new Date().toLocaleDateString(),
-    PhotoUrl: localStorage.getItem("PhotoUrl") || "",
+    PhotoUrl: "",
   });
-  const database = useFirebase();
+  const firebase = useFirebase();
+
+  const [recipe, setRecipe] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    console.log("I RAN");
+    if (firebase) {
+      console.log("FIREBASED");
+      setLoading(true);
+      const database = getDatabase(firebase.app);
+      const dbRef = ref(database);
+      get(child(dbRef, `recipes/${RecipeId}`)).then((snapshot) => {
+        console.log(snapshot);
+        if (snapshot.exists()) {
+          const recipeObject = snapshot.val();
+          console.log(recipeObject);
+          console.log(snapshot.val());
+          setRecipe(recipeObject);
+        } else {
+          console.log("No data available");
+        }
+      });
+    }
+  }, [firebase, RecipeId]);
+
+  React.useEffect(() => {
+    setValue({
+      ...recipe,
+      Date: new Date().toLocaleDateString(),
+    });
+    console.log(recipe);
+    localStorage.setItem("directionsState", recipe.Directions);
+    localStorage.setItem("ingredientsState", recipe.IngredientList);
+    setLoading(false);
+  }, [recipe]);
 
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty()
@@ -74,13 +113,17 @@ export default function RecipeEditor(props) {
     }
   };
 
-  const [directionsState, setDirectionsState] = React.useState(
-    getInitialDirectionState()
-  );
+  const [directionsState, setDirectionsState] = React.useState();
 
-  const [ingredientsState, setIngredientsState] = React.useState(
-    getInitialIngredientsState()
-  );
+  const [ingredientsState, setIngredientsState] = React.useState();
+
+  React.useEffect(() => {
+    if (!loading) {
+      console.log("I TAN");
+      getInitialDirectionState();
+      getInitialIngredientsState();
+    }
+  }, [loading]);
 
   const onDirectionsStateChange = (directionsState) => {
     setEditorState({
@@ -177,8 +220,9 @@ export default function RecipeEditor(props) {
     const auth = getAuth();
     const user = auth.currentUser;
     e.preventDefault();
-    const postListRef = ref(database, "recipes");
+    const postListRef = ref(firebase.database, "recipes");
 
+    // TO DO: Look at firebase docs and look at ways to update values instead of creating new
     try {
       const newPostRef = await push(postListRef);
       await set(newPostRef, {

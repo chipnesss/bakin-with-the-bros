@@ -154,7 +154,6 @@ export default function RecipeFeed() {
       const database = getDatabase(firebase.app);
       const dbRef = ref(database);
       get(child(dbRef, `recipes/`)).then(async (snapshot) => {
-        console.log(snapshot);
         if (snapshot.exists()) {
           const recipeList = Object.entries(snapshot.val()).map(([k, v]) => ({
             RecipedId: k,
