@@ -35,7 +35,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-function RecipeReviewCard({ recipe }) {
+export function RecipeReviewCard({ recipe }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const history = useHistory();

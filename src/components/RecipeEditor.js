@@ -31,12 +31,14 @@ export default function RecipeEditor(props) {
     Directions: "",
     ProTips: "",
     Date: new Date().toLocaleDateString(),
-    PhotoUrl: "",
   });
   const firebase = useFirebase();
 
-  const [recipe, setRecipe] = React.useState({});
+  const [recipe, setRecipe] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
+
+  const [directionsState, setDirectionsState] = React.useState();
+  const [ingredientsState, setIngredientsState] = React.useState();
 
   React.useEffect(() => {
     console.log("I RAN");
@@ -60,14 +62,24 @@ export default function RecipeEditor(props) {
   }, [firebase, RecipeId]);
 
   React.useEffect(() => {
-    setValue({
-      ...recipe,
-      Date: new Date().toLocaleDateString(),
-    });
-    console.log(recipe);
-    localStorage.setItem("directionsState", recipe.Directions);
-    localStorage.setItem("ingredientsState", recipe.IngredientList);
-    setLoading(false);
+    if (recipe) {
+      setValue({
+        ...recipe,
+        RecipeName: recipe.RecipeName,
+        Date: new Date().toLocaleDateString(),
+      });
+      console.log(recipe);
+
+      // TO DO: SET INITIAL IMAGE FROM LOCAL STORAGE
+      localStorage.setItem("RecipeName", recipe.RecipeName);
+      // localStorage.setItem("PhotoUrl", recipe.PhotoUrl);
+      localStorage.setItem("directionsState", recipe.Directions);
+      localStorage.setItem("ingredientsState", recipe.IngredientList);
+
+      setDirectionsState(getInitialDirectionState());
+      setIngredientsState(getInitialIngredientsState());
+      setLoading(false);
+    }
   }, [recipe]);
 
   const [editorState, setEditorState] = React.useState(
@@ -112,10 +124,6 @@ export default function RecipeEditor(props) {
       }
     }
   };
-
-  const [directionsState, setDirectionsState] = React.useState();
-
-  const [ingredientsState, setIngredientsState] = React.useState();
 
   React.useEffect(() => {
     if (!loading) {
@@ -220,12 +228,12 @@ export default function RecipeEditor(props) {
     const auth = getAuth();
     const user = auth.currentUser;
     e.preventDefault();
-    const postListRef = ref(firebase.database, "recipes");
+    const database = getDatabase(firebase.app);
+    const postListRef = ref(database, `recipes/${RecipeId}`);
 
     // TO DO: Look at firebase docs and look at ways to update values instead of creating new
     try {
-      const newPostRef = await push(postListRef);
-      await set(newPostRef, {
+      await set(postListRef, {
         ...value,
         IngredientList: messageContentHTML,
         Directions: directvar,
@@ -243,14 +251,14 @@ export default function RecipeEditor(props) {
       setValue({
         ...value,
         RecipeName: "",
-        PhotoUrl: "",
       });
 
       localStorage.removeItem("RecipeName");
-      localStorage.removeItem("PhotoUrl");
+
       localStorage.removeItem("directionsState");
       localStorage.removeItem("ingredientsState");
-    } catch {
+    } catch (error) {
+      console.log(error);
       setShowError(true);
     }
   };

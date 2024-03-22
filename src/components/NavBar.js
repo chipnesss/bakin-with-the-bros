@@ -15,7 +15,8 @@ import { Button } from "@mui/material";
 // import MenuPopupState from "./MenuPopupState";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
-import HomeIcon from "@mui/icons-material/Home";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const darkTheme = createTheme({
   palette: {
@@ -68,6 +69,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar() {
   const [value, setValue] = React.useState("");
   const [result, setResult] = React.useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  // (React.useState < null) | (HTMLElement > null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   React.useEffect(() => {
     if (value.length > 0) {
       fetch(
@@ -100,94 +110,201 @@ export default function SearchAppBar() {
         <Box sx={{ width: "100%" }}>
           <AppBar position="static">
             <Toolbar>
-              <Button
-                component={Link}
-                to="/"
-                variant="outlined"
-                // endIcon={<HomeIcon sx={{ color: "#ffffff" }} />}
+              <Box
                 sx={{
-                  color: "#FFFFFF",
-                  border: "1px solid #FFFFFF",
-                  "&:hover": {
-                    border: "1px solid #3CA6A6",
+                  display: {
+                    xs: "block",
+                    sm: "block",
+                    md: "block",
+                    lg: "block",
+                    xl: "none",
                   },
-                  width: 200,
-                  padding: 1,
-                  margin: 2,
                 }}
               >
-                Home{" "}
-              </Button>
-              <Button
-                component={Link}
-                to="/recipeCreation"
-                variant="outlined"
-                endIcon={<AddToPhotosIcon sx={{ color: "#ffffff" }} />}
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="open drawer"
+                  sx={{ mr: 2 }}
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem
+                    component={Link}
+                    to="/"
+                    onClick={handleClose}
+                    sx={{
+                      color: "#FFFFFF",
+                      border: "1px solid #FFFFFF",
+                      "&:hover": {
+                        border: "1px solid #3CA6A6",
+                      },
+                      padding: 1,
+                      margin: 2,
+                    }}
+                  >
+                    Home
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/recipeCreation"
+                    onClick={handleClose}
+                    sx={{
+                      color: "#FFFFFF",
+                      border: "1px solid #FFFFFF",
+                      "&:hover": {
+                        border: "1px solid #3CA6A6",
+                      },
+                      padding: 1,
+                      margin: 2,
+                    }}
+                  >
+                    + New Recipe
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/myRecipes"
+                    onClick={handleClose}
+                    sx={{
+                      color: "#FFFFFF",
+                      border: "1px solid #FFFFFF",
+                      "&:hover": {
+                        border: "1px solid #3CA6A6",
+                      },
+                      padding: 1,
+                      margin: 2,
+                    }}
+                  >
+                    My Recipes
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/recipeFeed"
+                    onClick={handleClose}
+                    sx={{
+                      color: "#FFFFFF",
+                      border: "1px solid #FFFFFF",
+                      "&:hover": {
+                        border: "1px solid #3CA6A6",
+                      },
+                      padding: 1,
+                      margin: 2,
+                    }}
+                  >
+                    Recipe Feed
+                  </MenuItem>
+                </Menu>
+              </Box>
+              <Box
                 sx={{
-                  color: "#FFFFFF",
-                  border: "1px solid #FFFFFF",
-                  "&:hover": {
-                    border: "1px solid #3CA6A6",
+                  display: {
+                    xs: "none",
+                    sm: "none",
+                    md: "none",
+                    lg: "none",
+                    xl: "block",
                   },
-                  width: 200,
-                  padding: 1,
-                  margin: 2,
                 }}
               >
-                Recipe
-              </Button>
-              <Button
-                component={Link}
-                to="/recipeFeed"
-                variant="outlined"
-                endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
-                sx={{
-                  color: "#FFFFFF",
-                  border: "1px solid #FFFFFF",
-                  "&:hover": {
-                    border: "1px solid #3CA6A6",
-                  },
-                  width: 200,
-                  padding: 1,
-                  margin: 2,
-                }}
-              >
-                Recipe Feed
-              </Button>
-              <Button
-                component={Link}
-                to="/myRecipes"
-                variant="outlined"
-                endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
-                sx={{
-                  color: "#FFFFFF",
-                  border: "1px solid #FFFFFF",
-                  "&:hover": {
-                    border: "1px solid #3CA6A6",
-                  },
-                  width: 200,
-                  padding: 1,
-                  margin: 2,
-                }}
-              >
-                My Recipes (Beta)
-              </Button>
-              {/* <MenuPopupState></MenuPopupState> */}
-              {/* <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="open drawer"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton> */}
+                <Button
+                  component={Link}
+                  to="/"
+                  variant="outlined"
+                  // endIcon={<HomeIcon sx={{ color: "#ffffff" }} />}
+                  sx={{
+                    color: "#FFFFFF",
+                    border: "1px solid #FFFFFF",
+                    "&:hover": {
+                      border: "1px solid #3CA6A6",
+                    },
+                    width: 200,
+                    padding: 1,
+                    margin: 2,
+                  }}
+                >
+                  Home{" "}
+                </Button>
+                <Button
+                  component={Link}
+                  to="/recipeCreation"
+                  variant="outlined"
+                  endIcon={<AddToPhotosIcon sx={{ color: "#ffffff" }} />}
+                  sx={{
+                    color: "#FFFFFF",
+                    border: "1px solid #FFFFFF",
+                    "&:hover": {
+                      border: "1px solid #3CA6A6",
+                    },
+                    width: 200,
+                    padding: 1,
+                    margin: 2,
+                  }}
+                >
+                  Recipe
+                </Button>
+                <Button
+                  component={Link}
+                  to="/recipeFeed"
+                  variant="outlined"
+                  endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
+                  sx={{
+                    color: "#FFFFFF",
+                    border: "1px solid #FFFFFF",
+                    "&:hover": {
+                      border: "1px solid #3CA6A6",
+                    },
+                    width: 200,
+                    padding: 1,
+                    margin: 2,
+                  }}
+                >
+                  Recipe Feed
+                </Button>
+                <Button
+                  component={Link}
+                  to="/myRecipes"
+                  variant="outlined"
+                  endIcon={<DynamicFeedIcon sx={{ color: "#ffffff" }} />}
+                  sx={{
+                    color: "#FFFFFF",
+                    border: "1px solid #FFFFFF",
+                    "&:hover": {
+                      border: "1px solid #3CA6A6",
+                    },
+                    width: 200,
+                    padding: 1,
+                    margin: 2,
+                  }}
+                >
+                  My Recipes
+                </Button>
+                {/* <MenuPopupState></MenuPopupState> */}
+              </Box>
+
               {/* <Header /> */}
               <Typography
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: "none", sm: "block" },
+                }}
               >
                 {" "}
               </Typography>

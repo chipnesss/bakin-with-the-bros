@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import SearchAppBar from "./NavBar";
 import { Button, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
+import { RecipeReviewCard } from "./RecipeFeed";
 
 const darkTheme = createTheme({
   palette: {
@@ -28,7 +29,7 @@ const darkTheme = createTheme({
   },
 });
 
-function RecipeReviewCard({ recipe }) {
+function DepRecipeReviewCard({ recipe }) {
   const history = useHistory();
 
   const handleRecipeClick = () => {
@@ -36,7 +37,7 @@ function RecipeReviewCard({ recipe }) {
   };
 
   return (
-    <Grid container sx={{}}>
+    <Grid container spacing={"2"}>
       <ThemeProvider theme={darkTheme}>
         <Card>
           <CardHeader title={recipe.RecipeName} />
@@ -67,15 +68,32 @@ export default function HighlightRecipes() {
     if (firebase) {
       const database = getDatabase(firebase.app);
       const dbRef = ref(database);
-      get(child(dbRef, `recipes/`)).then((snapshot) => {
+      get(child(dbRef, `recipes/`)).then(async (snapshot) => {
         console.log(snapshot);
         if (snapshot.exists()) {
           const recipeList = Object.entries(snapshot.val()).map(([k, v]) => ({
             RecipedId: k,
             ...v,
           }));
+          const recipeListWithUsers = await Promise.all(
+            recipeList.map(async (recipe) => {
+              const snapshot = await get(
+                child(dbRef, `user_meta/${recipe.userId}`)
+              );
+              console.log(snapshot);
+              if (snapshot.exists()) {
+                console.log(snapshot.val());
+                return {
+                  ...recipe,
+                  userPhoto: snapshot.val().photoURL,
+                  userDisplayName: snapshot.val().displayName,
+                };
+              }
+              return recipe;
+            })
+          );
           // Shuffle array
-          const shuffled = recipeList.sort(() => 0.5 - Math.random());
+          const shuffled = recipeListWithUsers.sort(() => 0.5 - Math.random());
 
           // Get sub-array of first n elements after shuffled
           let selected = shuffled.slice(0, 5);
@@ -89,14 +107,29 @@ export default function HighlightRecipes() {
   }, [firebase]);
 
   return recipes.length ? (
-    <Grid container spacing={2} alignItems="center" justifyContent="center">
+    <Grid
+      container
+      spacing={4}
+      border={"25px"}
+      margin={"15px"}
+      alignItems="center"
+      justifyContent="center"
+      bgcolor={"rgba(255, 255, 255, 0.05)"}
+      width={"90%"}
+      columns={{ xs: 4, md: 8, lg: 12 }}
+    >
       {recipes.map((recipe) => {
         return (
-          <Grid item lg={2} spacing={2}>
-            <RecipeReviewCard
-              sx={{ Height: "250px", Width: "250px" }}
-              recipe={recipe}
-            />
+          <Grid
+            item
+            xs={6}
+            lg={2}
+            spacing={4}
+            alignItems="center"
+            justifyContent="center"
+            margin={"15px"}
+          >
+            <RecipeReviewCard recipe={recipe} />
           </Grid>
         );
       })}
