@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { Grid } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import { getRecipesSortedByDate } from "../firebase/recipeData";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -149,44 +150,13 @@ export default function RecipeFeed() {
   //   updateStarCount(postElement, data);
   // });
 
-  React.useEffect(() => {
-    if (firebase) {
-      const database = getDatabase(firebase.app);
-      const dbRef = ref(database);
-      get(child(dbRef, `recipes/`)).then(async (snapshot) => {
-        if (snapshot.exists()) {
-          const recipeList = Object.entries(snapshot.val()).map(([k, v]) => ({
-            RecipedId: k,
-            ...v,
-          }));
-          const recipeListSorted = recipeList.sort((a, b) =>
-            new Date(a.TimeStamp) < new Date(b.TimeStamp) ? 1 : -1
-          );
-          const recipeListWithUsers = await Promise.all(
-            recipeListSorted.map(async (recipe) => {
-              const snapshot = await get(
-                child(dbRef, `user_meta/${recipe.userId}`)
-              );
-              console.log(snapshot);
-              if (snapshot.exists()) {
-                console.log(snapshot.val());
-                return {
-                  ...recipe,
-                  userPhoto: snapshot.val().photoURL,
-                  userDisplayName: snapshot.val().displayName,
-                };
-              }
-              return recipe;
-            })
-          );
+  const getAndSetRecipes = async (firebase) => {
+    const recipesSorted = await getRecipesSortedByDate(firebase);
+    setRecipes(recipesSorted);
+  };
 
-          setRecipes(recipeListWithUsers);
-          console.log(recipeListWithUsers);
-        } else {
-          console.log("No data available");
-        }
-      });
-    }
+  React.useEffect(() => {
+    getAndSetRecipes(firebase);
   }, [firebase]);
 
   return recipes.length ? (

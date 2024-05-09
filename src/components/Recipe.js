@@ -13,6 +13,7 @@ import SearchAppBar from "./NavBar";
 import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
 import { AlignHorizontalCenter } from "@mui/icons-material";
+import { Helmet } from "react-helmet";
 
 const darkTheme = createTheme({
   palette: {
@@ -48,6 +49,18 @@ export default function Recipe({}) {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
+        <Helmet>
+          <title>Bakin' With The Bros.</title>
+          <meta property="og:title" content="Bakin' With The Bros." />
+          <meta property="og:description" content={recipe.RecipeName} />
+          <meta
+            property="og:image"
+            content={
+              recipe.PhotoUrl ||
+              "https://firebasestorage.googleapis.com/v0/b/bakin-with-the-bros.appspot.com/o/images%2Fchip2.jpg?alt=media&token=87db18d7-5abe-4497-92f0-6de978c319a0"
+            }
+          />
+        </Helmet>
         <Container>
           <CssBaseline />
           <Header />
