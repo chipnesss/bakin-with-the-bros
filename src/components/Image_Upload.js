@@ -35,6 +35,14 @@ function ImageUploadCard(props) {
     props.selectedFile || null
   );
 
+  // TO DO:
+  //  1. Add video -> GIF converter somehow
+  //  https://dev.to/dd8888/create-a-gif-converter-using-react-178a
+  // Trouble shoot import for ffmpeg
+  // -- Trouble shoot with this https://ffmpegwasm.netlify.app/docs/getting-started/usage
+  // Bring in Gif Converter code
+  // Make it so they can conditionally render either an image upload, or a gif converter button
+
   const handleUploadClick = (event) => {
     console.log();
     var file = event.target.files[0];

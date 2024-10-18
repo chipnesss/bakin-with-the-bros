@@ -159,7 +159,7 @@ export default function RecipeFeed() {
     getAndSetRecipes(firebase);
   }, [firebase]);
 
-  return recipes.length ? (
+  return recipes && recipes.length ? (
     <Grid
       container
       spacing={4}

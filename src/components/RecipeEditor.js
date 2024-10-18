@@ -21,6 +21,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { BorderAllRounded } from "@mui/icons-material";
 import Recipes from "./Header";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import GifConverter from "./GifConverter";
 
 export default function RecipeEditor(props) {
   let { RecipeId } = useParams();
@@ -39,6 +40,8 @@ export default function RecipeEditor(props) {
 
   const [directionsState, setDirectionsState] = React.useState();
   const [ingredientsState, setIngredientsState] = React.useState();
+
+  const [gif, setGif] = React.useState();
 
   React.useEffect(() => {
     console.log("I RAN");
@@ -343,6 +346,7 @@ export default function RecipeEditor(props) {
               selectedFile={value.PhotoUrl || null}
               onValueChange={handleChangeImg}
             />
+            <GifConverter {...{ gif, setGif }} />
           </Grid>
         </Grid>
 
