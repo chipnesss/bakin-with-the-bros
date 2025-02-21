@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 const ffmpeg = createFFmpeg({ log: true });
+     
+     
+     
 
+// This function has an error that we need to resolve. SPecifically around line 24.
+// 4GifConverter.js:34 Error: Unsupported data type
 export default function GifConverter({ gif, setGif }) {
   const [ready, isReady] = useState(false);
   const [video, setVideo] = useState();
@@ -16,18 +21,19 @@ export default function GifConverter({ gif, setGif }) {
   }, []);
 
   const convertToGif = async () => {
-    ffmpeg.FS("writeFile", "giphy.mp4", await fetchFile(video));
+    // Write the file to memory 
+    ffmpeg.FS('writeFile', 'test.mp4', await fetchFile(video));
 
-    await ffmpeg.run("-i", "giphy.mp4", "-f", "gif", "out.gif");
+    // Run the FFMpeg command
+    await ffmpeg.run('-i', 'test.mp4', '-t', '2.5', '-ss', '2.0', '-f', 'gif', 'out.gif');
 
-    const data = ffmpeg.FS("readFile", "out.gif");
+    // Read the result
+    const data = ffmpeg.FS('readFile', 'out.gif');
 
-    const url = URL.createObjectURL(
-      new Blob([data.buffer], { type: "image/gif" })
-    );
-
-    setGif(url);
-  };
+    // Create a URL
+    const url = URL.createObjectURL(new Blob([data.buffer], { type: 'image/gif' }));
+    setGif(url)
+  }
 
   return ready ? (
     <div className="App">
@@ -39,7 +45,7 @@ export default function GifConverter({ gif, setGif }) {
 
       <h3>Result</h3>
 
-      <button onClick={convertToGif}>Convert to GIF</button>
+      <button onClick={(e)=>{convertToGif(e)}}>Convert to GIF</button>
       <br />
       {gif && <img src={gif} width="250"></img>}
     </div>
