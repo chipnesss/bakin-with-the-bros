@@ -18,6 +18,7 @@ jobs:
         run: |
           # Create directory if it doesn't exist
           mkdir -p src
+          mkdir -p src/firebase
           
           # Create apiKeys.json with Firebase configuration
           echo '{
@@ -31,7 +32,7 @@ jobs:
               "measurementId": "${{ secrets.FIREBASE_MEASUREMENT_ID || 'G-MMBMHSBPJ7' }}",
               "databaseURL": "https://bakin-with-the-bros-default-rtdb.firebaseio.com"
             }
-          }' > src/apiKeys.json
+          }' > src/firebase/apiKeys.json
           
           # Confirm file creation (without revealing secrets)
           echo "apiKeys.json created successfully"
